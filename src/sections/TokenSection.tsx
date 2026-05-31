@@ -5,7 +5,6 @@ import {
   AlertTriangle,
   Coins,
   ShieldCheck,
-  Sparkles,
   Lock,
   Gift,
   Rocket,
