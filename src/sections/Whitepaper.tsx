@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { FileText, Download, ArrowRight } from 'lucide-react';
 
+const whitepaperFile = '/assets/docs/PrediShark_whitepaper.pdf';
+
 export function Whitepaper() {
   return (
     <section id="whitepaper" className="relative py-20 lg:py-28">
@@ -17,6 +19,7 @@ export function Whitepaper() {
             className="absolute inset-0 bg-cover bg-center opacity-25"
             style={{ backgroundImage: "url('/assets/sections/whitepaper-cover.webp')" }}
           />
+
           <div className="absolute inset-0 bg-gradient-to-r from-shark-black/95 via-shark-navy/80 to-shark-black/60" />
           <div className="absolute inset-0 bg-gradient-to-t from-shark-black/80 via-transparent to-transparent" />
 
@@ -32,13 +35,13 @@ export function Whitepaper() {
               </h2>
 
               <p className="mt-5 text-shark-muted text-base lg:text-lg leading-8 max-w-2xl">
-                A clear breakdown of the AI prediction engine, product modules, Web3 direction,
-                partner model, and roadmap.
+                A clear breakdown of the AI prediction engine, live modules, partner model,
+                roadmap, and future Web3 utility.
               </p>
 
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
                 <a
-                  href="/assets/docs/predishark-whitepaper.pdf"
+                  href={whitepaperFile}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-shark-green to-shark-cyan text-shark-black font-bold hover:opacity-90 transition-opacity"
@@ -74,9 +77,20 @@ export function Whitepaper() {
                   <p className="text-xs uppercase tracking-[0.18em] text-shark-green font-semibold">
                     Project Overview
                   </p>
+
                   <p className="mt-2 text-sm text-shark-muted leading-7">
                     AI predictions, live modules, partner integrations, and future Web3 utility.
                   </p>
+
+                  <a
+                    href={whitepaperFile}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-shark-green hover:text-shark-cyan transition-colors"
+                  >
+                    Open PDF
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
                 </div>
               </div>
 
