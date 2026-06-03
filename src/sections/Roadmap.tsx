@@ -1,213 +1,176 @@
 import { motion } from 'framer-motion';
-import { MapPin, Sparkles, TrendingUp, Globe, Rocket, Check, Circle } from 'lucide-react';
+import {
+  Brain,
+  Trophy,
+  BarChart3,
+  Bot,
+  Languages,
+  WalletCards,
+  ShieldCheck,
+  CreditCard,
+  Globe2,
+  Sparkles,
+  CheckCircle2,
+} from 'lucide-react';
 
-const phases = [
+const roadmapItems = [
   {
-    phase: 'Phase 1',
-    title: 'MVP Launch',
+    icon: Brain,
+    title: 'Core AI Predictions',
+    description: 'AI predictions, Community Game, Odds search, and casino partner integration.',
+    accent: 'green',
+  },
+  {
+    icon: BarChart3,
+    title: 'Dashboards & Leaderboards',
+    description: 'User dashboards, prediction rankings, performance tracking, and Telegram Bot.',
+    accent: 'cyan',
+  },
+  {
+    icon: Languages,
+    title: 'Multi-Language Support',
+    description: 'Starting with German and English, with more languages added as the platform grows.',
+    accent: 'gold',
+  },
+  {
+    icon: WalletCards,
+    title: 'Bankroll & Acca Tools',
+    description: 'Bankroll management, Smart Acca Builder, and live prediction upgrades.',
+    accent: 'green',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Public Track Record',
+    description: 'Transparent prediction history with independent audit preparation.',
+    accent: 'cyan',
+  },
+  {
+    icon: CreditCard,
+    title: 'Subscription Rollout',
+    description: 'A fair subscription model for users after the free launch experience.',
+    accent: 'gold',
+  },
+  {
+    icon: Globe2,
+    title: 'API & Global Expansion',
+    description: 'Partner API availability, wider market access, and international growth.',
+    accent: 'green',
+  },
+  {
     icon: Sparkles,
-    color: 'green',
-    items: [
-      { text: 'AI predictions', done: true },
-      { text: 'Community game', done: true },
-      { text: 'Odds tools', done: true },
-      { text: 'Basic dashboard', done: false },
-    ],
-  },
-  {
-    phase: 'Phase 2',
-    title: 'Growth',
-    icon: TrendingUp,
-    color: 'cyan',
-    items: [
-      { text: 'Leaderboards', done: false },
-      { text: 'Bankroll tools', done: false },
-      { text: 'Smart Acca Builder', done: false },
-      { text: 'Live alerts', done: false },
-    ],
-  },
-  {
-    phase: 'Phase 3',
-    title: 'Web3 Expansion',
-    icon: Globe,
-    color: 'gold',
-    items: [
-      { text: 'Token utility', done: false },
-      { text: 'Staking access', done: false },
-      { text: 'Public track record', done: false },
-      { text: 'API access', done: false },
-    ],
-  },
-  {
-    phase: 'Phase 4',
-    title: 'Global Scaling',
-    icon: Rocket,
-    color: 'purple',
-    items: [
-      { text: 'More sports', done: false },
-      { text: 'More partners', done: false },
-      { text: 'More languages', done: false },
-      { text: 'AI optimization', done: false },
-    ],
+    title: 'Continuous Optimization',
+    description: 'Ongoing AI improvement, community events, partner campaigns, and ecosystem updates.',
+    accent: 'cyan',
   },
 ];
 
-const colorMap: Record<string, { border: string; glow: string; icon: string; line: string; badge: string }> = {
+const accentMap: Record<
+  string,
+  {
+    icon: string;
+    border: string;
+    glow: string;
+    line: string;
+    dot: string;
+  }
+> = {
   green: {
-    border: 'border-shark-green/20 hover:border-shark-green/40',
-    glow: 'shadow-[0_0_20px_rgba(0,245,160,0.1)]',
-    icon: 'bg-shark-green/20 text-shark-green',
-    line: 'bg-shark-green',
-    badge: 'bg-shark-green/10 text-shark-green',
+    icon: 'bg-shark-green/15 text-shark-green border-shark-green/20',
+    border: 'border-shark-green/20',
+    glow: 'hover:shadow-[0_0_36px_rgba(0,245,160,0.13)]',
+    line: 'from-shark-green to-shark-cyan',
+    dot: 'bg-shark-green',
   },
   cyan: {
-    border: 'border-shark-cyan/20 hover:border-shark-cyan/40',
-    glow: 'shadow-[0_0_20px_rgba(0,217,255,0.1)]',
-    icon: 'bg-shark-cyan/20 text-shark-cyan',
-    line: 'bg-shark-cyan',
-    badge: 'bg-shark-cyan/10 text-shark-cyan',
+    icon: 'bg-shark-cyan/15 text-shark-cyan border-shark-cyan/20',
+    border: 'border-shark-cyan/20',
+    glow: 'hover:shadow-[0_0_36px_rgba(0,217,255,0.13)]',
+    line: 'from-shark-cyan to-shark-green',
+    dot: 'bg-shark-cyan',
   },
   gold: {
-    border: 'border-shark-gold/20 hover:border-shark-gold/40',
-    glow: 'shadow-[0_0_20px_rgba(247,201,72,0.1)]',
-    icon: 'bg-shark-gold/20 text-shark-gold',
-    line: 'bg-shark-gold',
-    badge: 'bg-shark-gold/10 text-shark-gold',
-  },
-  purple: {
-    border: 'border-purple-400/20 hover:border-purple-400/40',
-    glow: 'shadow-[0_0_20px_rgba(167,139,250,0.1)]',
-    icon: 'bg-purple-400/20 text-purple-400',
-    line: 'bg-purple-400',
-    badge: 'bg-purple-400/10 text-purple-400',
+    icon: 'bg-shark-gold/15 text-shark-gold border-shark-gold/20',
+    border: 'border-shark-gold/20',
+    glow: 'hover:shadow-[0_0_36px_rgba(247,201,72,0.13)]',
+    line: 'from-shark-gold to-shark-green',
+    dot: 'bg-shark-gold',
   },
 };
 
 export function Roadmap() {
   return (
     <section id="roadmap" className="relative py-20 lg:py-28">
-      <div className="absolute inset-0 radial-glow-cyan opacity-50" />
-      
+      <div className="absolute inset-0 radial-glow opacity-40" />
+      <div className="absolute inset-0 bg-grid-pattern bg-[length:38px_38px] opacity-[0.08]" />
+
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-14"
+          className="text-center mb-16"
         >
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium glass rounded-full text-shark-cyan border-shark-cyan/20 mb-4">
-            <MapPin className="w-3.5 h-3.5" />
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-semibold uppercase tracking-[0.18em] text-shark-green border border-shark-green/15 mb-5">
+            <Trophy className="w-4 h-4" />
             Roadmap
           </span>
-          <h2 className="text-3xl lg:text-4xl font-bold text-shark-white">
-            Our <span className="gradient-text">Roadmap</span>
+
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black text-shark-white leading-tight">
+            Development <span className="gradient-text">Priorities</span>
           </h2>
+
+          <p className="mt-5 text-shark-muted max-w-3xl mx-auto leading-8 text-base lg:text-lg">
+            PrediShark.ai will evolve continuously through practical product upgrades, stronger
+            prediction tools, trusted performance records, and global community growth.
+          </p>
         </motion.div>
 
-        {/* Desktop: Horizontal timeline */}
-        <div className="hidden lg:block">
-          {/* Timeline line */}
-          <div className="relative mb-8">
-            <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-shark-green/40 via-shark-cyan/40 to-shark-gold/40" />
-            <div className="relative flex justify-between">
-              {phases.map((phase, i) => {
-                const colors = colorMap[phase.color];
-                const doneCount = phase.items.filter(item => item.done).length;
-                const isActive = doneCount > 0 && doneCount < phase.items.length;
-                const isComplete = doneCount === phase.items.length;
-                return (
-                  <motion.div
-                    key={phase.phase}
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.15 }}
-                    className={`w-10 h-10 rounded-full ${colors.icon} flex items-center justify-center border-2 ${isComplete ? 'border-shark-green' : isActive ? 'border-shark-cyan' : 'border-white/10'} bg-shark-black z-10`}
-                  >
-                    {isComplete ? <Check className="w-5 h-5" /> : <phase.icon className="w-5 h-5" />}
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+          {roadmapItems.map((item, index) => {
+            const colors = accentMap[item.accent];
+            const Icon = item.icon;
 
-          {/* Phase cards */}
-          <div className="grid grid-cols-4 gap-6">
-            {phases.map((phase, i) => {
-              const colors = colorMap[phase.color];
-              return (
-                <motion.div
-                  key={phase.phase}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.15 }}
-                  className={`glass rounded-2xl p-5 border ${colors.border} ${colors.glow} transition-all hover:-translate-y-1`}
-                >
-                  <span className={`inline-block text-xs px-2 py-1 rounded-full ${colors.badge} mb-3`}>
-                    {phase.phase}
-                  </span>
-                  <h3 className="text-lg font-semibold text-shark-white mb-4">{phase.title}</h3>
-                  <ul className="space-y-2.5">
-                    {phase.items.map((item) => (
-                      <li key={item.text} className="flex items-center gap-2.5">
-                        {item.done ? (
-                          <Check className="w-4 h-4 text-shark-green flex-shrink-0" />
-                        ) : (
-                          <Circle className="w-4 h-4 text-shark-muted flex-shrink-0" />
-                        )}
-                        <span className={`text-sm ${item.done ? 'text-shark-white' : 'text-shark-muted'}`}>
-                          {item.text}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Mobile: Vertical timeline */}
-        <div className="lg:hidden space-y-6">
-          {phases.map((phase, i) => {
-            const colors = colorMap[phase.color];
             return (
               <motion.div
-                key={phase.phase}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                key={item.title}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className={`relative glass rounded-2xl p-5 border ${colors.border} pl-12`}
+                transition={{ duration: 0.55, delay: index * 0.05 }}
+                className={`group relative overflow-hidden rounded-[28px] border ${colors.border} glass-strong ${colors.glow} transition-all duration-300 hover:-translate-y-1 min-h-[280px]`}
               >
-                {/* Timeline dot */}
-                <div className={`absolute left-4 top-6 w-8 h-8 rounded-full ${colors.icon} flex items-center justify-center`}>
-                  <phase.icon className="w-4 h-4" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.045] via-transparent to-white/[0.015]" />
+                <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${colors.line}`} />
+
+                <div className="relative z-10 h-full p-6 flex flex-col">
+                  <div className="flex items-center justify-between mb-6">
+                    <div
+                      className={`w-13 h-13 min-w-13 rounded-2xl border flex items-center justify-center ${colors.icon}`}
+                    >
+                      <Icon className="w-6 h-6" />
+                    </div>
+
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/10 bg-white/[0.04] text-[10px] font-semibold uppercase tracking-[0.14em] text-shark-muted">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-shark-green" />
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                  </div>
+
+                  <div className="flex-1">
+                    <h3 className="text-xl lg:text-2xl font-black text-shark-white leading-tight">
+                      {item.title}
+                    </h3>
+
+                    <p className="mt-4 text-sm text-shark-muted leading-7">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  <div className="mt-6 flex items-center justify-between">
+                    <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+                    <div className={`ml-4 w-2.5 h-2.5 rounded-full ${colors.dot} shadow-glow`} />
+                  </div>
                 </div>
-                {/* Vertical line */}
-                {i < phases.length - 1 && (
-                  <div className={`absolute left-7 top-14 w-px h-[calc(100%+24px)] ${colors.line} opacity-20`} />
-                )}
-                
-                <span className={`inline-block text-xs px-2 py-1 rounded-full ${colors.badge} mb-2`}>
-                  {phase.phase}
-                </span>
-                <h3 className="text-lg font-semibold text-shark-white mb-3">{phase.title}</h3>
-                <ul className="space-y-2">
-                  {phase.items.map((item) => (
-                    <li key={item.text} className="flex items-center gap-2">
-                      {item.done ? (
-                        <Check className="w-4 h-4 text-shark-green flex-shrink-0" />
-                      ) : (
-                        <Circle className="w-4 h-4 text-shark-muted flex-shrink-0" />
-                      )}
-                      <span className={`text-sm ${item.done ? 'text-shark-white' : 'text-shark-muted'}`}>
-                        {item.text}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
               </motion.div>
             );
           })}

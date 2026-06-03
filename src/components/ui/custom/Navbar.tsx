@@ -43,14 +43,18 @@ export function Navbar() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-20">
-            <button onClick={() => scrollTo('#home')} className="flex items-center gap-3 group">
-              <img
-                src="/assets/branding/logo-mark.png"
-                alt="PrediShark.ai logo"
-                className="w-10 h-10 object-contain rounded-xl shadow-glow"
-              />
-              <span className="text-lg font-bold tracking-[0.08em] uppercase">
+          <div className="flex items-center justify-between h-20 lg:h-24">
+            <button onClick={() => scrollTo('#home')} className="flex items-center gap-3.5 group">
+              <div className="relative">
+                <div className="absolute inset-0 rounded-2xl bg-shark-green/20 blur-xl opacity-70 group-hover:opacity-100 transition-opacity" />
+                <img
+                  src="/assets/branding/logo-mark.png"
+                  alt="PrediShark.ai logo"
+                  className="relative z-10 w-14 h-14 sm:w-16 sm:h-16 lg:w-[72px] lg:h-[72px] object-contain rounded-2xl"
+                />
+              </div>
+
+              <span className="text-xl sm:text-2xl lg:text-[28px] font-black tracking-[0.04em] uppercase leading-none">
                 <span className="text-shark-white">Predi</span>
                 <span className="text-shark-green">Shark</span>
                 <span className="text-shark-cyan">.ai</span>
@@ -72,7 +76,7 @@ export function Navbar() {
             <div className="hidden lg:flex items-center gap-3">
               <button
                 onClick={handleContractClick}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-semibold tracking-[0.18em] uppercase glass rounded-lg hover:border-shark-green/30 transition-all group"
+                className="flex items-center gap-2 px-4 py-2.5 text-xs font-semibold tracking-[0.18em] uppercase glass rounded-xl hover:border-shark-green/30 transition-all group"
               >
                 <Copy className="w-4 h-4 text-shark-green" />
                 <span className="text-shark-white">Copy Contract</span>
@@ -83,7 +87,7 @@ export function Navbar() {
               onClick={() => setMobileOpen(!mobileOpen)}
               className="lg:hidden p-2 text-shark-muted hover:text-shark-white"
             >
-              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
             </button>
           </div>
         </div>
@@ -101,27 +105,30 @@ export function Navbar() {
               className="absolute inset-0 bg-shark-black/95 backdrop-blur-xl"
               onClick={() => setMobileOpen(false)}
             />
-            <div className="relative pt-20 px-6">
-              <div className="flex flex-col gap-2">
-                {navLinks.map((link) => (
-                  <button
-                    key={link.href}
-                    onClick={() => scrollTo(link.href)}
-                    className="px-4 py-3 text-left text-base font-semibold tracking-[0.18em] uppercase text-shark-muted hover:text-shark-white hover:bg-white/5 rounded-xl transition-colors"
-                  >
-                    {link.label}
-                  </button>
-                ))}
-              </div>
 
-              <div className="mt-6">
-                <button
-                  onClick={handleContractClick}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 glass rounded-xl text-sm font-semibold tracking-[0.16em] uppercase"
-                >
-                  <Copy className="w-5 h-5 text-shark-green" />
-                  <span>Copy Contract</span>
-                </button>
+            <div className="relative pt-24 px-5">
+              <div className="glass-strong rounded-3xl border border-white/10 p-4">
+                <div className="flex flex-col gap-2">
+                  {navLinks.map((link) => (
+                    <button
+                      key={link.href}
+                      onClick={() => scrollTo(link.href)}
+                      className="px-4 py-3 text-left text-base font-semibold tracking-[0.18em] uppercase text-shark-muted hover:text-shark-white hover:bg-white/5 rounded-xl transition-colors"
+                    >
+                      {link.label}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="mt-5">
+                  <button
+                    onClick={handleContractClick}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3.5 glass rounded-2xl text-sm font-semibold tracking-[0.16em] uppercase"
+                  >
+                    <Copy className="w-5 h-5 text-shark-green" />
+                    <span>Copy Contract</span>
+                  </button>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -140,6 +147,7 @@ export function Navbar() {
               className="absolute inset-0 bg-black/70 backdrop-blur-md"
               onClick={() => setShowNotice(false)}
             />
+
             <motion.div
               initial={{ opacity: 0, scale: 0.96, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -150,6 +158,7 @@ export function Navbar() {
                 <div className="w-12 h-12 rounded-2xl bg-shark-gold/15 flex items-center justify-center">
                   <AlertTriangle className="w-6 h-6 text-shark-gold" />
                 </div>
+
                 <div>
                   <h3 className="text-xl font-bold text-shark-white">Contract Address Coming Soon</h3>
                   <p className="text-sm text-shark-muted">
