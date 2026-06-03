@@ -3,7 +3,6 @@ import {
   Brain,
   Trophy,
   BarChart3,
-  Bot,
   Languages,
   WalletCards,
   ShieldCheck,
