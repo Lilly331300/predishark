@@ -17,7 +17,9 @@ const liveModules = [
     iframe: 'https://betpredictor.live/predictions/embed',
     image: '/assets/sections/widget-daily-predictions.webp',
     accent: 'green',
-    height: 900,
+    visibleHeight: 900,
+    iframeHeight: 900,
+    disableIframeScroll: false,
   },
   {
     icon: Calculator,
@@ -26,7 +28,9 @@ const liveModules = [
     iframe: 'https://betpredictor.live/profi/embed?datum=today',
     image: '/assets/sections/widget-odds-calculator.webp',
     accent: 'gold',
-    height: 900,
+    visibleHeight: 900,
+    iframeHeight: 900,
+    disableIframeScroll: false,
   },
   {
     icon: BarChart3,
@@ -35,7 +39,9 @@ const liveModules = [
     iframe: 'https://betpredictor.live/statistic/embed',
     image: '/assets/sections/widget-prediction-history.webp',
     accent: 'cyan',
-    height: 900,
+    visibleHeight: 900,
+    iframeHeight: 900,
+    disableIframeScroll: false,
   },
   {
     icon: Activity,
@@ -44,7 +50,9 @@ const liveModules = [
     iframe: 'https://betpredictor.live/live-ticker/embed',
     image: '/assets/sections/widget-football-liveticker.webp',
     accent: 'green',
-    height: 900,
+    visibleHeight: 900,
+    iframeHeight: 1500,
+    disableIframeScroll: true,
   },
 ];
 
@@ -165,31 +173,47 @@ function LiveModuleCard({
         </div>
 
         <div
-          className={`relative overflow-hidden rounded-[24px] border border-white/10 bg-shark-black/90 ${
-            isLiveTicker ? 'predishark-liveticker-frame' : 'predishark-iframe-frame'
+          className={`relative rounded-[24px] border border-white/10 bg-shark-black/90 ${
+            isLiveTicker
+              ? 'predishark-liveticker-outer overflow-y-auto overflow-x-hidden'
+              : 'predishark-iframe-outer overflow-hidden'
           }`}
+          style={{
+            height: module.visibleHeight,
+            maxHeight: module.visibleHeight,
+          }}
         >
           <div className={`absolute inset-x-0 top-0 z-10 h-px bg-gradient-to-r ${colors.line}`} />
 
           <iframe
             src={module.iframe}
             width="100%"
-            height={module.height}
+            height={module.iframeHeight}
             style={{
               border: 0,
               colorScheme: 'dark',
               backgroundColor: '#04070A',
+              overflow: module.disableIframeScroll ? 'hidden' : 'auto',
             }}
             loading="lazy"
             title={module.title}
-            className="block w-full bg-shark-black"
+            className={`block w-full bg-shark-black ${
+              module.disableIframeScroll ? 'pointer-events-auto' : ''
+            }`}
+            scrolling={module.disableIframeScroll ? 'no' : 'auto'}
           />
         </div>
 
-        <p className="mt-4 text-xs text-shark-muted/70 leading-6">
-          If this module appears empty, it may only show full data when live matches or provider data
-          are available.
-        </p>
+        {isLiveTicker ? (
+          <p className="mt-4 text-xs text-shark-muted/70 leading-6">
+            The LiveTicker uses a themed outer scroll area to match PrediShark.ai colors.
+          </p>
+        ) : (
+          <p className="mt-4 text-xs text-shark-muted/70 leading-6">
+            If this module appears empty, it may only show full data when live matches or provider
+            data are available.
+          </p>
+        )}
       </div>
     </motion.div>
   );
@@ -200,39 +224,50 @@ export function PredictionWidgets() {
     <section id="predictions" className="relative py-20 lg:py-28">
       <style>
         {`
-          .predishark-iframe-frame,
-          .predishark-liveticker-frame {
+          .predishark-iframe-outer,
+          .predishark-liveticker-outer {
             scrollbar-width: thin;
             scrollbar-color: #00F5A0 #08131A;
           }
 
-          .predishark-iframe-frame::-webkit-scrollbar,
-          .predishark-liveticker-frame::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+          .predishark-iframe-outer::-webkit-scrollbar,
+          .predishark-liveticker-outer::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
           }
 
-          .predishark-iframe-frame::-webkit-scrollbar-track,
-          .predishark-liveticker-frame::-webkit-scrollbar-track {
+          .predishark-iframe-outer::-webkit-scrollbar-track,
+          .predishark-liveticker-outer::-webkit-scrollbar-track {
             background: #08131A;
             border-radius: 999px;
           }
 
-          .predishark-iframe-frame::-webkit-scrollbar-thumb,
-          .predishark-liveticker-frame::-webkit-scrollbar-thumb {
+          .predishark-iframe-outer::-webkit-scrollbar-thumb,
+          .predishark-liveticker-outer::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #00F5A0, #00D9FF);
             border-radius: 999px;
             border: 2px solid #08131A;
           }
 
-          .predishark-iframe-frame::-webkit-scrollbar-thumb:hover,
-          .predishark-liveticker-frame::-webkit-scrollbar-thumb:hover {
+          .predishark-iframe-outer::-webkit-scrollbar-thumb:hover,
+          .predishark-liveticker-outer::-webkit-scrollbar-thumb:hover {
             background: linear-gradient(180deg, #00D9FF, #00F5A0);
           }
 
-          .predishark-liveticker-frame iframe {
-            scrollbar-width: thin;
-            scrollbar-color: #00F5A0 #08131A;
+          .predishark-liveticker-outer iframe {
+            display: block;
+            overflow: hidden !important;
+          }
+
+          @media (max-width: 640px) {
+            .predishark-liveticker-outer {
+              height: 720px !important;
+              max-height: 720px !important;
+            }
+
+            .predishark-liveticker-outer iframe {
+              height: 1300px !important;
+            }
           }
         `}
       </style>
