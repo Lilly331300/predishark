@@ -105,13 +105,13 @@ export function TokenSection() {
                     </p>
 
                     <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-3">
-                      <code className="flex-1 text-sm text-shark-white break-all bg-shark-black/50 border border-white/10 rounded-2xl px-4 py-3">
-                        [INSERT CONTRACT ADDRESS HERE]
-                      </code>
+                      <div className="flex-1 text-sm text-shark-white bg-shark-black/50 border border-white/10 rounded-2xl px-4 py-3">
+                        Contract Address Coming Soon
+                      </div>
 
                       <button
                         onClick={() => setShowNotice(true)}
-                        className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-gradient-to-r from-shark-green to-shark-cyan text-shark-black font-bold whitespace-nowrap"
+                        className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-gradient-to-r from-shark-green to-shark-cyan text-shark-black font-bold whitespace-nowrap hover:opacity-90 transition-opacity"
                       >
                         <Copy className="w-4 h-4" />
                         Copy
@@ -136,8 +136,12 @@ export function TokenSection() {
                             <p className="text-[10px] uppercase tracking-[0.18em] text-shark-muted">
                               {item.label}
                             </p>
-                            <p className="mt-1 text-lg font-black text-shark-white">{item.value}</p>
-                            <p className="mt-1 text-xs text-shark-muted leading-5">{item.detail}</p>
+                            <p className="mt-1 text-lg font-black text-shark-white">
+                              {item.value}
+                            </p>
+                            <p className="mt-1 text-xs text-shark-muted leading-5">
+                              {item.detail}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -156,8 +160,12 @@ export function TokenSection() {
                           </div>
 
                           <div>
-                            <h4 className="text-base font-bold text-shark-white">{item.title}</h4>
-                            <p className="mt-1 text-sm text-shark-muted leading-7">{item.text}</p>
+                            <h4 className="text-base font-bold text-shark-white">
+                              {item.title}
+                            </h4>
+                            <p className="mt-1 text-sm text-shark-muted leading-7">
+                              {item.text}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -209,8 +217,12 @@ export function TokenSection() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold text-shark-white">Contract Address Coming Soon</h3>
-                  <p className="text-sm text-shark-muted">Please wait for the official launch notice.</p>
+                  <h3 className="text-xl font-bold text-shark-white">
+                    Contract Address Coming Soon
+                  </h3>
+                  <p className="text-sm text-shark-muted">
+                    Please wait for the official launch notice.
+                  </p>
                 </div>
               </div>
 
@@ -229,7 +241,7 @@ export function TokenSection() {
               <div className="mt-6 flex justify-end">
                 <button
                   onClick={() => setShowNotice(false)}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-shark-green to-shark-cyan text-shark-black font-semibold"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-shark-green to-shark-cyan text-shark-black font-semibold hover:opacity-90 transition-opacity"
                 >
                   Got it
                 </button>
