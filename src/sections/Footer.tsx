@@ -1,23 +1,43 @@
-import { ExternalLink, MessageCircle } from 'lucide-react';
+import { ExternalLink, Send } from 'lucide-react';
+
+const WHITEPAPER_FILE = '/assets/docs/PrediShark_whitepaper.pdf';
+const TELEGRAM_LINK = 'https://t.me/predishark';
+const X_LINK = 'https://x.com/predishark';
 
 const footerLinks = [
-  { label: 'Predictions', href: '#predictions' },
-  { label: 'Whitepaper', href: '#whitepaper' },
-  { label: 'Token', href: '#token' },
-  { label: 'Partners', href: '#partners' },
-  { label: 'Roadmap', href: '#roadmap' },
-  { label: 'Responsible Use', href: '#responsible-use' },
+  { label: 'Predictions', href: 'predictions', type: 'reveal' },
+  { label: 'Whitepaper', href: WHITEPAPER_FILE, type: 'external' },
+  { label: 'Token', href: '#token', type: 'scroll' },
+  { label: 'Partners', href: 'partners', type: 'reveal' },
+  { label: 'Roadmap', href: 'roadmap', type: 'reveal' },
 ];
 
 const socialLinks = [
-  { label: 'X', href: 'https://x.com/', type: 'x' as const },
-  { label: 'Telegram', href: 'https://t.me/', type: 'telegram' as const },
+  { label: 'X', href: X_LINK, type: 'x' as const },
+  { label: 'Telegram', href: TELEGRAM_LINK, type: 'telegram' as const },
 ];
 
 export function Footer() {
-  const scrollTo = (href: string) => {
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  const handleLinkClick = (href: string, type: string) => {
+    if (type === 'external') {
+      window.open(href, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    if (type === 'reveal') {
+      window.dispatchEvent(
+        new CustomEvent('predishark:reveal-section', {
+          detail: href,
+        })
+      );
+      return;
+    }
+
+    window.dispatchEvent(
+      new CustomEvent('predishark:scroll-section', {
+        detail: href,
+      })
+    );
   };
 
   return (
@@ -31,9 +51,10 @@ export function Footer() {
               <img
                 src="/assets/branding/logo-mark.png"
                 alt="PrediShark.ai logo"
-                className="w-10 h-10 object-contain rounded-xl shadow-glow"
+                className="w-12 h-12 object-contain rounded-xl shadow-glow"
               />
-              <span className="text-lg font-bold tracking-[0.08em] uppercase">
+
+              <span className="text-xl font-black tracking-[0.06em] uppercase">
                 <span className="text-shark-white">Predi</span>
                 <span className="text-shark-green">Shark</span>
                 <span className="text-shark-cyan">.ai</span>
@@ -41,8 +62,8 @@ export function Footer() {
             </div>
 
             <p className="text-shark-muted text-sm max-w-sm mb-5 leading-7">
-              AI Sports Predictions + Web3 Intelligence. Designed to make football prediction
-              experiences feel sharper, cleaner, and more premium.
+              Prediction intelligence on the front end. Crypto utility through $SHARK. Clear,
+              direct, and built for a premium sports-tech experience.
             </p>
 
             <div className="flex items-center gap-3">
@@ -56,9 +77,9 @@ export function Footer() {
                   className="w-10 h-10 rounded-xl glass flex items-center justify-center text-shark-muted hover:text-shark-green hover:border-shark-green/30 transition-all"
                 >
                   {social.type === 'x' ? (
-                    <span className="text-sm font-bold tracking-tight">𝕏</span>
+                    <span className="text-sm font-black">𝕏</span>
                   ) : (
-                    <MessageCircle className="w-4 h-4" />
+                    <Send className="w-4 h-4" />
                   )}
                 </a>
               ))}
@@ -69,11 +90,12 @@ export function Footer() {
             <h4 className="text-sm font-semibold text-shark-white uppercase tracking-[0.18em] mb-4">
               Quick Links
             </h4>
+
             <ul className="space-y-2.5">
               {footerLinks.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <button
-                    onClick={() => scrollTo(link.href)}
+                    onClick={() => handleLinkClick(link.href, link.type)}
                     className="text-sm text-shark-muted hover:text-shark-green transition-colors"
                   >
                     {link.label}
@@ -87,10 +109,11 @@ export function Footer() {
             <h4 className="text-sm font-semibold text-shark-white uppercase tracking-[0.18em] mb-4">
               Resources
             </h4>
+
             <ul className="space-y-2.5">
               <li>
                 <a
-                  href="/assets/docs/predishark-whitepaper.pdf"
+                  href={WHITEPAPER_FILE}
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm text-shark-muted hover:text-shark-green transition-colors flex items-center gap-1.5"
@@ -98,6 +121,7 @@ export function Footer() {
                   Whitepaper <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
+
               <li>
                 <a
                   href="http://megasino.win/"
@@ -106,6 +130,17 @@ export function Footer() {
                   className="text-sm text-shark-muted hover:text-shark-green transition-colors flex items-center gap-1.5"
                 >
                   Megasino.win <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href={TELEGRAM_LINK}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm text-shark-muted hover:text-shark-green transition-colors flex items-center gap-1.5"
+                >
+                  Telegram <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
             </ul>
@@ -117,6 +152,7 @@ export function Footer() {
             <p className="text-xs text-shark-muted text-center sm:text-left">
               &copy; {new Date().getFullYear()} PrediShark.ai. All rights reserved.
             </p>
+
             <p className="text-xs text-shark-muted/70 text-center sm:text-right max-w-md">
               PrediShark.ai provides information and analysis only. Please act responsibly and
               follow local laws.

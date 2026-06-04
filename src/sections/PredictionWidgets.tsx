@@ -17,9 +17,7 @@ const liveModules = [
     iframe: 'https://betpredictor.live/predictions/embed',
     image: '/assets/sections/widget-daily-predictions.webp',
     accent: 'green',
-    visibleHeight: 900,
-    iframeHeight: 900,
-    disableIframeScroll: false,
+    height: 760,
   },
   {
     icon: Calculator,
@@ -28,9 +26,7 @@ const liveModules = [
     iframe: 'https://betpredictor.live/profi/embed?datum=today',
     image: '/assets/sections/widget-odds-calculator.webp',
     accent: 'gold',
-    visibleHeight: 900,
-    iframeHeight: 900,
-    disableIframeScroll: false,
+    height: 760,
   },
   {
     icon: BarChart3,
@@ -39,9 +35,7 @@ const liveModules = [
     iframe: 'https://betpredictor.live/statistic/embed',
     image: '/assets/sections/widget-prediction-history.webp',
     accent: 'cyan',
-    visibleHeight: 900,
-    iframeHeight: 900,
-    disableIframeScroll: false,
+    height: 760,
   },
   {
     icon: Activity,
@@ -50,9 +44,7 @@ const liveModules = [
     iframe: 'https://betpredictor.live/live-ticker/embed',
     image: '/assets/sections/widget-football-liveticker.webp',
     accent: 'green',
-    visibleHeight: 900,
-    iframeHeight: 1500,
-    disableIframeScroll: true,
+    height: 760,
   },
 ];
 
@@ -89,184 +81,35 @@ const accentMap: Record<
   },
 };
 
-function LiveModuleCard({
-  module,
-  index,
-}: {
-  module: (typeof liveModules)[number];
-  index: number;
-}) {
-  const colors = accentMap[module.accent];
-
-  const sectionId =
-    module.title === 'Football LiveTicker'
-      ? 'liveticker'
-      : module.title === 'Real-Time Statistics'
-        ? 'statistics'
-        : module.title === 'Mathematical Prediction System'
-          ? 'calculator'
-          : undefined;
-
-  const isLiveTicker = module.title === 'Football LiveTicker';
-
-  return (
-    <motion.div
-      id={sectionId}
-      initial={{ opacity: 0, y: 34 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.65, delay: index * 0.08 }}
-      className={`relative overflow-hidden rounded-[30px] border ${colors.border} glass-strong ${colors.glow}`}
-    >
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-20"
-        style={{ backgroundImage: `url('${module.image}')` }}
-      />
-
-      <div className="absolute inset-0 bg-gradient-to-b from-shark-card/95 via-shark-navy/92 to-shark-black/98" />
-      <div className="absolute inset-0 bg-grid-pattern bg-[length:34px_34px] opacity-[0.12]" />
-
-      <div className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r ${colors.line}`} />
-
-      <div className="relative z-10 p-5 sm:p-6 lg:p-7">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 mb-6">
-          <div className="flex items-start gap-4">
-            <div
-              className={`w-13 h-13 min-w-13 rounded-2xl flex items-center justify-center ${colors.icon}`}
-            >
-              <module.icon className="w-6 h-6" />
-            </div>
-
-            <div>
-              <div className="flex flex-wrap items-center gap-2 mb-3">
-                <span
-                  className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-[11px] font-semibold uppercase tracking-[0.18em] ${colors.badge}`}
-                >
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  Live Integration
-                </span>
-
-                <span className="inline-flex items-center px-3.5 py-2 rounded-full bg-white/[0.04] border border-white/10 text-[11px] font-semibold uppercase tracking-[0.18em] text-shark-muted">
-                  Iframe Module
-                </span>
-              </div>
-
-              <h3 className="text-2xl lg:text-3xl font-black text-shark-white">
-                {module.title}
-              </h3>
-
-              <p className="mt-2 text-sm lg:text-base text-shark-muted max-w-3xl leading-7">
-                {module.subtitle}
-              </p>
-            </div>
-          </div>
-
-          <a
-            href={module.iframe}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl glass border border-white/10 text-shark-white font-semibold hover:border-shark-green/30 transition-all whitespace-nowrap"
-          >
-            Open Module
-            <ExternalLink className="w-4 h-4 text-shark-green" />
-          </a>
-        </div>
-
-        <div
-          className={`relative rounded-[24px] border border-white/10 bg-shark-black/90 ${
-            isLiveTicker
-              ? 'predishark-liveticker-outer overflow-y-auto overflow-x-hidden'
-              : 'predishark-iframe-outer overflow-hidden'
-          }`}
-          style={{
-            height: module.visibleHeight,
-            maxHeight: module.visibleHeight,
-          }}
-        >
-          <div className={`absolute inset-x-0 top-0 z-10 h-px bg-gradient-to-r ${colors.line}`} />
-
-          <iframe
-            src={module.iframe}
-            width="100%"
-            height={module.iframeHeight}
-            style={{
-              border: 0,
-              colorScheme: 'dark',
-              backgroundColor: '#04070A',
-              overflow: module.disableIframeScroll ? 'hidden' : 'auto',
-            }}
-            loading="lazy"
-            title={module.title}
-            className={`block w-full bg-shark-black ${
-              module.disableIframeScroll ? 'pointer-events-auto' : ''
-            }`}
-            scrolling={module.disableIframeScroll ? 'no' : 'auto'}
-          />
-        </div>
-
-        {isLiveTicker ? (
-          <p className="mt-4 text-xs text-shark-muted/70 leading-6">
-            The LiveTicker uses a themed outer scroll area to match PrediShark.ai colors.
-          </p>
-        ) : (
-          <p className="mt-4 text-xs text-shark-muted/70 leading-6">
-            If this module appears empty, it may only show full data when live matches or provider
-            data are available.
-          </p>
-        )}
-      </div>
-    </motion.div>
-  );
-}
-
 export function PredictionWidgets() {
   return (
-    <section id="predictions" className="relative py-20 lg:py-28">
+    <section id="predictions" className="relative py-16 lg:py-20">
       <style>
         {`
-          .predishark-iframe-outer,
-          .predishark-liveticker-outer {
+          .predishark-iframe-wrapper {
             scrollbar-width: thin;
             scrollbar-color: #00F5A0 #08131A;
           }
 
-          .predishark-iframe-outer::-webkit-scrollbar,
-          .predishark-liveticker-outer::-webkit-scrollbar {
+          .predishark-iframe-wrapper::-webkit-scrollbar {
             width: 10px;
             height: 10px;
           }
 
-          .predishark-iframe-outer::-webkit-scrollbar-track,
-          .predishark-liveticker-outer::-webkit-scrollbar-track {
+          .predishark-iframe-wrapper::-webkit-scrollbar-track {
             background: #08131A;
             border-radius: 999px;
           }
 
-          .predishark-iframe-outer::-webkit-scrollbar-thumb,
-          .predishark-liveticker-outer::-webkit-scrollbar-thumb {
+          .predishark-iframe-wrapper::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #00F5A0, #00D9FF);
             border-radius: 999px;
             border: 2px solid #08131A;
           }
 
-          .predishark-iframe-outer::-webkit-scrollbar-thumb:hover,
-          .predishark-liveticker-outer::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #00D9FF, #00F5A0);
-          }
-
-          .predishark-liveticker-outer iframe {
-            display: block;
-            overflow: hidden !important;
-          }
-
           @media (max-width: 640px) {
-            .predishark-liveticker-outer {
-              height: 720px !important;
-              max-height: 720px !important;
-            }
-
-            .predishark-liveticker-outer iframe {
-              height: 1300px !important;
+            .predishark-iframe-wrapper iframe {
+              height: 680px !important;
             }
           }
         `}
@@ -277,9 +120,8 @@ export function PredictionWidgets() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-14"
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
         >
           <span className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] glass rounded-full text-shark-cyan border border-shark-cyan/20 mb-4">
             <Sparkles className="w-4 h-4" />
@@ -291,15 +133,98 @@ export function PredictionWidgets() {
           </h2>
 
           <p className="mt-4 text-shark-muted max-w-3xl mx-auto leading-8">
-            Integrated football prediction tools powered through live iframes — predictions,
-            mathematical analysis, statistics, and match tracking in one premium experience.
+            All core prediction tools are displayed here: AI predictions, mathematical analysis,
+            real-time statistics, and live match tracking.
           </p>
         </motion.div>
 
         <div className="grid gap-8 lg:gap-10">
-          {liveModules.map((module, index) => (
-            <LiveModuleCard key={module.title} module={module} index={index} />
-          ))}
+          {liveModules.map((module, index) => {
+            const colors = accentMap[module.accent];
+            const Icon = module.icon;
+
+            return (
+              <motion.div
+                key={module.title}
+                initial={{ opacity: 0, y: 34 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: index * 0.08 }}
+                className={`relative overflow-hidden rounded-[28px] border ${colors.border} glass-strong ${colors.glow}`}
+              >
+                <div
+                  className="absolute inset-0 bg-cover bg-center opacity-20"
+                  style={{ backgroundImage: `url('${module.image}')` }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-shark-card/95 via-shark-navy/92 to-shark-black/98" />
+                <div className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r ${colors.line}`} />
+
+                <div className="relative z-10 p-4 sm:p-6 lg:p-7">
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 mb-6">
+                    <div className="flex items-start gap-4">
+                      <div
+                        className={`w-12 h-12 min-w-12 rounded-2xl flex items-center justify-center ${colors.icon}`}
+                      >
+                        <Icon className="w-6 h-6" />
+                      </div>
+
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2 mb-3">
+                          <span
+                            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-[11px] font-semibold uppercase tracking-[0.18em] ${colors.badge}`}
+                          >
+                            <ShieldCheck className="w-3.5 h-3.5" />
+                            Live Integration
+                          </span>
+
+                          <span className="inline-flex items-center px-3.5 py-2 rounded-full bg-white/[0.04] border border-white/10 text-[11px] font-semibold uppercase tracking-[0.18em] text-shark-muted">
+                            Iframe Module
+                          </span>
+                        </div>
+
+                        <h3 className="text-2xl lg:text-3xl font-black text-shark-white">
+                          {module.title}
+                        </h3>
+
+                        <p className="mt-2 text-sm lg:text-base text-shark-muted max-w-3xl leading-7">
+                          {module.subtitle}
+                        </p>
+                      </div>
+                    </div>
+
+                    <a
+                      href={module.iframe}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl glass border border-white/10 text-shark-white font-semibold hover:border-shark-green/30 transition-all whitespace-nowrap"
+                    >
+                      Open Module
+                      <ExternalLink className="w-4 h-4 text-shark-green" />
+                    </a>
+                  </div>
+
+                  <div className="predishark-iframe-wrapper relative overflow-hidden rounded-[24px] border border-white/10 bg-shark-black/90">
+                    <iframe
+                      src={module.iframe}
+                      width="100%"
+                      height={module.height}
+                      style={{
+                        border: 0,
+                        colorScheme: 'dark',
+                        backgroundColor: '#04070A',
+                      }}
+                      loading="lazy"
+                      title={module.title}
+                      className="block w-full bg-shark-black"
+                    />
+                  </div>
+
+                  <p className="mt-4 text-xs text-shark-muted/70 leading-6">
+                    If this module appears empty, it may only show full data when live matches or provider data are available.
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -10,6 +10,7 @@ import {
   Globe2,
   Sparkles,
   CheckCircle2,
+  Megaphone,
 } from 'lucide-react';
 
 const roadmapItems = [
@@ -50,29 +51,27 @@ const roadmapItems = [
     accent: 'gold',
   },
   {
+    icon: Megaphone,
+    title: 'Influencer Cooperation',
+    description:
+      'Cooperation across social platforms with influencers in sports, prediction, online casino, and crypto.',
+    accent: 'green',
+  },
+  {
     icon: Globe2,
     title: 'API & Global Expansion',
     description: 'Partner API availability, wider market access, and international growth.',
-    accent: 'green',
+    accent: 'cyan',
   },
   {
     icon: Sparkles,
     title: 'Continuous Optimization',
     description: 'Ongoing AI improvement, community events, partner campaigns, and ecosystem updates.',
-    accent: 'cyan',
+    accent: 'gold',
   },
 ];
 
-const accentMap: Record<
-  string,
-  {
-    icon: string;
-    border: string;
-    glow: string;
-    line: string;
-    dot: string;
-  }
-> = {
+const accentMap: Record<string, { icon: string; border: string; glow: string; line: string; dot: string }> = {
   green: {
     icon: 'bg-shark-green/15 text-shark-green border-shark-green/20',
     border: 'border-shark-green/20',
@@ -98,33 +97,32 @@ const accentMap: Record<
 
 export function Roadmap() {
   return (
-    <section id="roadmap" className="relative py-20 lg:py-28">
+    <section id="roadmap" className="relative py-16 lg:py-20">
       <div className="absolute inset-0 radial-glow opacity-40" />
-      <div className="absolute inset-0 bg-grid-pattern bg-[length:38px_38px] opacity-[0.08]" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-semibold uppercase tracking-[0.18em] text-shark-green border border-shark-green/15 mb-5">
             <Trophy className="w-4 h-4" />
             Roadmap
           </span>
 
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black text-shark-white leading-tight">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-shark-white leading-tight">
             Development <span className="gradient-text">Priorities</span>
           </h2>
 
-          <p className="mt-5 text-shark-muted max-w-3xl mx-auto leading-8 text-base lg:text-lg">
-            PrediShark.ai will evolve continuously through practical product upgrades, stronger
-            prediction tools, trusted performance records, and global community growth.
+          <p className="mt-5 text-shark-muted max-w-3xl mx-auto leading-8 text-base">
+            PrediShark.ai will evolve through product upgrades, trusted performance records,
+            global community growth, and strategic market visibility.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
           {roadmapItems.map((item, index) => {
             const colors = accentMap[item.accent];
             const Icon = item.icon;
@@ -136,16 +134,14 @@ export function Roadmap() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.55, delay: index * 0.05 }}
-                className={`group relative overflow-hidden rounded-[28px] border ${colors.border} glass-strong ${colors.glow} transition-all duration-300 hover:-translate-y-1 min-h-[280px]`}
+                className={`group relative overflow-hidden rounded-[26px] border ${colors.border} glass-strong ${colors.glow} transition-all duration-300 hover:-translate-y-1 min-h-[240px]`}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-white/[0.045] via-transparent to-white/[0.015]" />
                 <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${colors.line}`} />
 
                 <div className="relative z-10 h-full p-6 flex flex-col">
-                  <div className="flex items-center justify-between mb-6">
-                    <div
-                      className={`w-13 h-13 min-w-13 rounded-2xl border flex items-center justify-center ${colors.icon}`}
-                    >
+                  <div className="flex items-center justify-between mb-5">
+                    <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center ${colors.icon}`}>
                       <Icon className="w-6 h-6" />
                     </div>
 
@@ -156,7 +152,7 @@ export function Roadmap() {
                   </div>
 
                   <div className="flex-1">
-                    <h3 className="text-xl lg:text-2xl font-black text-shark-white leading-tight">
+                    <h3 className="text-xl font-black text-shark-white leading-tight">
                       {item.title}
                     </h3>
 
@@ -165,7 +161,7 @@ export function Roadmap() {
                     </p>
                   </div>
 
-                  <div className="mt-6 flex items-center justify-between">
+                  <div className="mt-5 flex items-center justify-between">
                     <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
                     <div className={`ml-4 w-2.5 h-2.5 rounded-full ${colors.dot} shadow-glow`} />
                   </div>

@@ -5,45 +5,80 @@ import {
   Copy,
   AlertTriangle,
   TrendingUp,
-  ShieldCheck,
-  Coins,
-  Rocket,
-  Lock,
-  Gift,
-  Layers3,
+  Target,
+  RefreshCw,
+  Gamepad2,
+  CalendarDays,
   Sparkles,
+  Wallet,
+  Send,
 } from 'lucide-react';
 import { ParticleBackground } from '@/components/ui/custom/ParticleBackground';
 
-const tokenItems = [
+const TELEGRAM_LINK = 'https://t.me/predishark';
+
+const cryptoUtilities = [
   {
-    icon: Coins,
-    label: 'Ticker',
-    value: 'Coming Soon',
+    icon: Copy,
+    label: 'Token Address',
+    value: 'Copy contract address',
+    helper: 'Official CA will be added after launch confirmation.',
+    type: 'copy',
+    accent: 'green',
   },
   {
-    icon: Rocket,
-    label: 'Launch',
-    value: 'Coming Soon',
-  },
-  {
-    icon: Lock,
-    label: 'Access',
-    value: 'Future Staking',
-  },
-  {
-    icon: Gift,
+    icon: RefreshCw,
     label: 'Rewards',
-    value: 'Community Utility',
+    value: '20% weekly buybacks',
+    helper: '20% of subscription revenue is used for $SHARK buybacks.',
+    type: 'info',
+    accent: 'cyan',
+  },
+  {
+    icon: Gamepad2,
+    label: 'Casino Utility',
+    value: 'Online casino usage',
+    helper: '$SHARK can be used across supported casino and partner services.',
+    type: 'info',
+    accent: 'gold',
+  },
+  {
+    icon: CalendarDays,
+    label: 'Community Events',
+    value: 'Regular reward events',
+    helper: 'Community campaigns, competitions, and ecosystem activity.',
+    type: 'info',
+    accent: 'green',
   },
 ];
+
+const accentMap: Record<string, { icon: string; label: string; border: string }> = {
+  green: {
+    icon: 'bg-shark-green/10 border-shark-green/20 text-shark-green',
+    label: 'text-shark-green',
+    border: 'hover:border-shark-green/30',
+  },
+  cyan: {
+    icon: 'bg-shark-cyan/10 border-shark-cyan/20 text-shark-cyan',
+    label: 'text-shark-cyan',
+    border: 'hover:border-shark-cyan/30',
+  },
+  gold: {
+    icon: 'bg-shark-gold/10 border-shark-gold/20 text-shark-gold',
+    label: 'text-shark-gold',
+    border: 'hover:border-shark-gold/30',
+  },
+};
 
 export function Hero() {
   const [showNotice, setShowNotice] = useState(false);
 
-  const scrollTo = (href: string) => {
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  const openPredictionEngine = () => {
+    window.dispatchEvent(
+      new CustomEvent('predishark:reveal-section', {
+        detail: 'predictions',
+      })
+    );
   };
 
   return (
@@ -66,18 +101,6 @@ export function Hero() {
           className="absolute bottom-0 right-1/4 w-[360px] sm:w-[460px] h-[360px] sm:h-[460px] bg-shark-cyan/10 rounded-full blur-[150px]"
         />
 
-        <motion.div
-          animate={{ y: [0, -24, 0], rotate: [0, 4, 0] }}
-          transition={{ duration: 7, repeat: Infinity }}
-          className="hidden lg:block absolute top-32 right-[10%] w-24 h-24 rounded-full border border-shark-green/20 bg-shark-green/5 blur-[1px]"
-        />
-
-        <motion.div
-          animate={{ y: [0, 20, 0], rotate: [0, -5, 0] }}
-          transition={{ duration: 8, repeat: Infinity }}
-          className="hidden lg:block absolute bottom-28 left-[8%] w-20 h-20 rounded-full border border-shark-cyan/20 bg-shark-cyan/5 blur-[1px]"
-        />
-
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-14 sm:pt-32 sm:pb-20 lg:py-36">
           <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-10 lg:gap-16 items-center">
             <div>
@@ -91,7 +114,7 @@ export function Hero() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-shark-green opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-shark-green" />
                 </span>
-                PrediShark.ai
+                Prediction Intelligence
               </motion.div>
 
               <motion.h1
@@ -104,7 +127,7 @@ export function Hero() {
                 <br />
                 <span className="gradient-text">Bet Smarter.</span>
                 <br />
-                Earn Smarter.
+                Decide Smarter.
               </motion.h1>
 
               <motion.p
@@ -113,8 +136,8 @@ export function Hero() {
                 transition={{ duration: 0.65, delay: 0.3 }}
                 className="mt-5 text-base lg:text-lg text-shark-muted max-w-xl leading-8"
               >
-                AI-powered football predictions, premium odds intelligence, transparent
-                history, and a crypto-native experience built for sharper sports insight.
+                AI-powered football predictions, real-time statistics, mathematical prediction
+                tools, and transparent performance logic built for smarter match decisions.
               </motion.p>
 
               <motion.div
@@ -124,20 +147,22 @@ export function Hero() {
                 className="mt-7 flex flex-col sm:flex-row gap-4"
               >
                 <button
-                  onClick={() => scrollTo('#predictions')}
+                  onClick={openPredictionEngine}
                   className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-shark-green to-shark-cyan text-shark-black font-bold shadow-glow hover:opacity-90 transition-all hover:-translate-y-0.5"
                 >
                   Explore Prediction Engine
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
 
-                <button
-                  onClick={() => scrollTo('#whitepaper')}
-                  className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl glass border border-white/10 text-shark-white font-semibold hover:border-shark-green/30 transition-all hover:-translate-y-0.5"
+                <a
+                  href={TELEGRAM_LINK}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl glass border border-white/10 text-shark-white font-semibold hover:border-shark-cyan/30 transition-all hover:-translate-y-0.5"
                 >
-                  Read Whitepaper
-                  <ArrowRight className="w-5 h-5 text-shark-green group-hover:translate-x-1 transition-transform" />
-                </button>
+                  Join Our Telegram Community
+                  <Send className="w-4 h-4 text-shark-cyan" />
+                </a>
               </motion.div>
 
               <motion.div
@@ -146,18 +171,16 @@ export function Hero() {
                 transition={{ duration: 0.65, delay: 0.5 }}
                 className="mt-6 grid sm:grid-cols-2 gap-4 max-w-2xl"
               >
-                <div className="glass rounded-2xl p-4 border border-white/10">
+                <div className="glass rounded-2xl p-4 border border-shark-green/20">
                   <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-2xl bg-shark-green/10 flex items-center justify-center">
-                      <ShieldCheck className="w-5 h-5 text-shark-green" />
+                      <Target className="w-5 h-5 text-shark-green" />
                     </div>
 
                     <div>
-                      <p className="text-sm font-semibold text-shark-white">
-                        Contract Address Coming Soon
-                      </p>
-                      <p className="text-xs text-shark-muted leading-6 mt-1">
-                        Only trust official PrediShark.ai channels for token announcements.
+                      <p className="text-lg font-black text-shark-green">56–62%</p>
+                      <p className="text-xs uppercase tracking-[0.16em] text-shark-muted">
+                        Average Success Rate
                       </p>
                     </div>
                   </div>
@@ -170,11 +193,9 @@ export function Hero() {
                     </div>
 
                     <div>
-                      <p className="text-sm font-semibold text-shark-white">
-                        Data Meets Intuition
-                      </p>
+                      <p className="text-sm font-semibold text-shark-white">Prediction First</p>
                       <p className="text-xs text-shark-muted leading-6 mt-1">
-                        Football prediction intelligence with a premium product experience.
+                        Football data, AI probability, statistics, and match context at first glance.
                       </p>
                     </div>
                   </div>
@@ -207,29 +228,26 @@ export function Hero() {
                 />
 
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-shark-gold/80 to-transparent" />
-                <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-shark-green/50 to-transparent" />
-                <div className="absolute inset-y-0 right-0 w-px bg-gradient-to-b from-transparent via-shark-cyan/50 to-transparent" />
 
                 <div className="relative z-10 p-4 sm:p-6 lg:p-7">
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-5">
                     <div>
                       <p className="text-xs uppercase tracking-[0.22em] text-shark-gold font-semibold">
-                        Web3 Utility Layer
+                        Crypto Utility Layer
                       </p>
 
                       <h3 className="text-2xl lg:text-3xl font-black text-shark-white mt-2">
-                        PrediShark Token Details
+                        $SHARK Token Utility
                       </h3>
 
                       <p className="mt-2 text-sm text-shark-muted leading-7 max-w-md">
-                        Token information will be released only through verified PrediShark.ai
-                        channels.
+                        Rewards, casino usage, community events, and buyback utility in one clear token layer.
                       </p>
                     </div>
 
                     <span className="inline-flex w-fit items-center justify-center gap-2 px-3.5 py-2 rounded-full bg-shark-gold/10 border border-shark-gold/20 text-shark-gold text-[11px] font-semibold uppercase tracking-[0.16em] whitespace-nowrap">
                       <Sparkles className="w-3.5 h-3.5" />
-                      Coming Soon
+                      Solana SPL
                     </span>
                   </div>
 
@@ -244,95 +262,69 @@ export function Hero() {
 
                     <div className="absolute left-4 right-4 bottom-4">
                       <div className="glass rounded-2xl p-4 border border-white/10">
-                        <p className="text-xs uppercase tracking-[0.18em] text-shark-green font-semibold">
-                          Token Utility
-                        </p>
-                        <p className="mt-1 text-sm text-shark-white font-medium">
-                          Future access, rewards, staking benefits, and ecosystem growth.
-                        </p>
+                        <div className="flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-xl bg-shark-green/10 border border-shark-green/20 flex items-center justify-center">
+                            <Wallet className="w-4 h-4 text-shark-green" />
+                          </div>
+
+                          <div>
+                            <p className="text-xs uppercase tracking-[0.18em] text-shark-green font-semibold">
+                              Native Utility Token
+                            </p>
+                            <p className="mt-1 text-sm text-shark-white font-medium">
+                              $SHARK powers rewards, buybacks, payments, and community activity.
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    {tokenItems.map((item, index) => (
-                      <motion.div
-                        key={item.label}
-                        initial={{ opacity: 0, y: 14 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.35 + index * 0.08 }}
-                        className="glass rounded-2xl border border-white/10 p-4 hover:border-shark-green/25 transition-all"
-                      >
-                        <div className="flex items-start gap-3">
-                          <div className="w-10 h-10 rounded-2xl bg-shark-green/10 border border-shark-green/20 flex items-center justify-center">
-                            <item.icon className="w-5 h-5 text-shark-green" />
+                    {cryptoUtilities.map((item, index) => {
+                      const styles = accentMap[item.accent];
+
+                      return (
+                        <motion.button
+                          key={item.label}
+                          type="button"
+                          onClick={() => {
+                            if (item.type === 'copy') setShowNotice(true);
+                          }}
+                          initial={{ opacity: 0, y: 14 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.35 + index * 0.08 }}
+                          className={`text-left glass rounded-2xl border border-white/10 p-4 ${styles.border} transition-all`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <div
+                              className={`w-10 h-10 rounded-2xl border flex items-center justify-center ${styles.icon}`}
+                            >
+                              <item.icon className="w-5 h-5" />
+                            </div>
+
+                            <div>
+                              <p
+                                className={`text-[10px] uppercase tracking-[0.18em] font-semibold ${styles.label}`}
+                              >
+                                {item.label}
+                              </p>
+
+                              <p className="mt-1 text-sm font-black text-shark-white leading-6">
+                                {item.value}
+                              </p>
+
+                              <p className="mt-1 text-xs text-shark-muted leading-5">
+                                {item.helper}
+                              </p>
+                            </div>
                           </div>
-
-                          <div>
-                            <p className="text-[10px] uppercase tracking-[0.18em] text-shark-muted">
-                              {item.label}
-                            </p>
-                            <p className="mt-1 text-base font-bold text-shark-white">
-                              {item.value}
-                            </p>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  <div className="mt-4 glass rounded-2xl border border-shark-gold/20 p-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-shark-gold/10 flex items-center justify-center">
-                        <Layers3 className="w-5 h-5 text-shark-gold" />
-                      </div>
-
-                      <div className="flex-1">
-                        <p className="text-sm font-semibold text-shark-white">
-                          Future token utility
-                        </p>
-                        <p className="mt-1 text-sm text-shark-muted leading-7">
-                          Designed for future access, staking benefits, community rewards, and
-                          ecosystem participation.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 rounded-2xl border border-shark-green/20 bg-shark-green/5 p-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      <div>
-                        <p className="text-xs uppercase tracking-[0.18em] text-shark-green font-semibold">
-                          Contract Status
-                        </p>
-                        <p className="mt-1 text-sm text-shark-white font-medium">
-                          Official contract address is not live yet.
-                        </p>
-                      </div>
-
-                      <button
-                        onClick={() => setShowNotice(true)}
-                        className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-shark-green to-shark-cyan text-shark-black font-bold whitespace-nowrap hover:opacity-90 transition-opacity"
-                      >
-                        <Copy className="w-4 h-4" />
-                        Copy Contract
-                      </button>
-                    </div>
+                        </motion.button>
+                      );
+                    })}
                   </div>
                 </div>
               </motion.div>
-
-              <motion.div
-                animate={{ y: [0, 14, 0], rotate: [0, -3, 0] }}
-                transition={{ duration: 6, repeat: Infinity }}
-                className="hidden xl:block absolute -bottom-8 -left-8 glass rounded-2xl border border-shark-cyan/20 p-4 shadow-[0_0_28px_rgba(0,217,255,0.15)]"
-              >
-                <p className="text-xs uppercase tracking-[0.16em] text-shark-muted">Contract</p>
-                <p className="text-lg font-black text-shark-cyan">Not Live</p>
-              </motion.div>
-
-              <div className="absolute -top-8 -right-8 w-24 h-24 rounded-full bg-shark-gold/10 blur-3xl" />
-              <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-shark-green/10 blur-3xl" />
             </motion.div>
           </div>
         </div>
@@ -340,12 +332,7 @@ export function Hero() {
 
       <AnimatePresence>
         {showNotice && (
-          <motion.div
-            className="fixed inset-0 z-[60] flex items-center justify-center px-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
+          <motion.div className="fixed inset-0 z-[60] flex items-center justify-center px-4">
             <div
               className="absolute inset-0 bg-black/70 backdrop-blur-md"
               onClick={() => setShowNotice(false)}
@@ -363,24 +350,20 @@ export function Hero() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold text-shark-white">
-                    Contract Address Coming Soon
-                  </h3>
-                  <p className="text-sm text-shark-muted">
-                    Please wait for the official launch notice.
-                  </p>
+                  <h3 className="text-xl font-bold text-shark-white">Contract Address Coming Soon</h3>
+                  <p className="text-sm text-shark-muted">Please wait for the official launch notice.</p>
                 </div>
               </div>
 
               <div className="space-y-4 text-sm text-shark-muted leading-7">
                 <p className="text-shark-white font-medium">Coming soon!</p>
                 <p>
-                  The official PrediShark.ai contract address is not live yet. Please only use
-                  the address announced through official PrediShark.ai channels.
+                  The official PrediShark.ai contract address is not live yet. Please only use the
+                  address announced through official PrediShark.ai channels.
                 </p>
                 <p>
-                  Always verify before interacting with any token or contract. Avoid fake
-                  addresses, fake airdrops, and unofficial links.
+                  Always verify before interacting with any token or contract. Avoid fake addresses,
+                  fake airdrops, and unofficial links.
                 </p>
               </div>
 
