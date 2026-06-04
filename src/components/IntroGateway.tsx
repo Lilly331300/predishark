@@ -148,7 +148,7 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
           ))}
         </div>
 
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.18)_34%,rgba(0,0,0,0.9)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.16)_34%,rgba(0,0,0,0.9)_100%)]" />
 
         <motion.div
           className="absolute inset-0"
@@ -172,12 +172,12 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
           }}
         />
 
-        <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
+        <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-8 sm:py-10">
           <div className="relative w-full max-w-7xl mx-auto flex flex-col items-center text-center">
             <motion.div
-              className="absolute w-[520px] h-[520px] sm:w-[720px] sm:h-[720px] lg:w-[900px] lg:h-[900px] rounded-full border border-shark-green/20"
+              className="absolute w-[460px] h-[460px] sm:w-[640px] sm:h-[640px] lg:w-[820px] lg:h-[820px] rounded-full border border-shark-green/20"
               animate={{
-                scale: entering ? [1, 1.7, 2.6] : [0.98, 1.045, 0.98],
+                scale: entering ? [1, 1.7, 2.6] : [0.98, 1.04, 0.98],
                 opacity: entering ? [0.55, 0.25, 0] : [0.2, 0.42, 0.2],
                 rotate: entering ? 38 : [0, 8, 0],
               }}
@@ -189,7 +189,7 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
             />
 
             <motion.div
-              className="absolute w-[420px] h-[420px] sm:w-[620px] sm:h-[620px] lg:w-[780px] lg:h-[780px] rounded-full bg-shark-green/10 blur-[90px]"
+              className="absolute w-[380px] h-[380px] sm:w-[560px] sm:h-[560px] lg:w-[720px] lg:h-[720px] rounded-full bg-shark-green/10 blur-[90px]"
               animate={{
                 scale: entering ? [1, 1.6, 2.2] : [0.96, 1.08, 0.96],
                 opacity: entering ? [0.52, 0.28, 0] : [0.26, 0.5, 0.26],
@@ -206,7 +206,7 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
             <motion.img
               src="/assets/gateway/water-splash-overlay.png"
               alt=""
-              className="absolute w-[560px] sm:w-[780px] lg:w-[980px] opacity-0 pointer-events-none mix-blend-screen"
+              className="absolute w-[540px] sm:w-[740px] lg:w-[940px] opacity-0 pointer-events-none mix-blend-screen"
               animate={{
                 opacity: entering ? [0, 0.8, 0] : 0,
                 scale: entering ? [0.75, 1.15, 2.15] : 0.75,
@@ -217,17 +217,17 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
 
             <motion.div
               className="relative z-20"
-              initial={{ scale: 0.95, opacity: 0, y: 18 }}
+              initial={{ scale: 0.95, opacity: 0, y: 12 }}
               animate={{
-                scale: entering ? [1, 1.14, 0.14] : [1, 1.025, 1.01, 1.03, 1],
+                scale: entering ? [1, 1.14, 0.14] : [1, 1.018, 1],
                 opacity: entering ? [1, 1, 0.95] : 1,
                 x: entering
                   ? ['0vw', '7vw', 'calc(-50vw + 74px)']
-                  : ['0vw', '1.2vw', '-0.8vw', '0.7vw', '0vw'],
+                  : ['0vw', '0.8vw', '-0.6vw', '0vw'],
                 y: entering
                   ? ['0vh', '-4vh', 'calc(-50vh + 58px)']
-                  : ['0vh', '-1.4vh', '0.8vh', '-0.8vh', '0vh'],
-                rotate: entering ? [0, -7, 0] : [0, 1.4, -1, 0.8, 0],
+                  : ['0vh', '-0.9vh', '0.5vh', '0vh'],
+                rotate: entering ? [0, -7, 0] : [0, 0.9, -0.6, 0],
                 filter: entering
                   ? [
                       'drop-shadow(0 0 42px rgba(0,245,160,0.42))',
@@ -236,14 +236,12 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
                     ]
                   : [
                       'drop-shadow(0 0 36px rgba(0,245,160,0.32))',
-                      'drop-shadow(0 0 64px rgba(0,217,255,0.55))',
-                      'drop-shadow(0 0 44px rgba(0,245,160,0.4))',
-                      'drop-shadow(0 0 72px rgba(0,217,255,0.48))',
+                      'drop-shadow(0 0 62px rgba(0,217,255,0.52))',
                       'drop-shadow(0 0 36px rgba(0,245,160,0.32))',
                     ],
               }}
               transition={{
-                duration: entering ? 1.65 : 8,
+                duration: entering ? 1.65 : 7,
                 repeat: entering ? 0 : Infinity,
                 ease: 'easeInOut',
               }}
@@ -251,55 +249,55 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
               <img
                 src="/assets/branding/predishark-fish-logo.png"
                 alt="PrediShark shark logo"
-                className="w-[330px] sm:w-[470px] lg:w-[610px] xl:w-[690px] mx-auto select-none"
+                className="w-[280px] sm:w-[390px] md:w-[440px] lg:w-[510px] xl:w-[570px] mx-auto select-none"
                 draggable={false}
               />
             </motion.div>
 
             <motion.div
-              className="relative z-30 mt-4 sm:mt-5"
+              className="relative z-30 mt-2 sm:mt-3 lg:mt-2"
               animate={{
                 opacity: entering ? 0 : 1,
-                y: entering ? 30 : 0,
+                y: entering ? 24 : 0,
                 scale: entering ? 0.94 : 1,
               }}
               transition={{ duration: 0.45 }}
             >
               <motion.div
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.25 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-shark-green/20 text-shark-green text-xs font-semibold uppercase tracking-[0.2em] mb-5"
+                transition={{ duration: 0.65, delay: 0.2 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-shark-green/20 text-shark-green text-[10px] sm:text-xs font-semibold uppercase tracking-[0.18em] mb-3 sm:mb-4"
               >
                 <Sparkles className="w-4 h-4" />
                 AI Football Prediction + Crypto Utility
               </motion.div>
 
               <motion.h1
-                initial={{ opacity: 0, y: 18 }}
+                initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.75, delay: 0.4 }}
-                className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-shark-white"
+                transition={{ duration: 0.7, delay: 0.35 }}
+                className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight text-shark-white"
               >
                 Enter the <span className="gradient-text">PrediShark</span> World
               </motion.h1>
 
               <motion.p
-                initial={{ opacity: 0, y: 18 }}
+                initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.75, delay: 0.55 }}
-                className="mt-5 text-sm sm:text-base lg:text-lg text-shark-muted max-w-2xl mx-auto leading-8"
+                transition={{ duration: 0.7, delay: 0.48 }}
+                className="mt-3 sm:mt-4 text-xs sm:text-sm lg:text-base text-shark-muted max-w-2xl mx-auto leading-7"
               >
                 Premium football prediction intelligence, live data modules, and the $SHARK
                 crypto utility layer in one futuristic ecosystem.
               </motion.p>
 
               <motion.button
-                initial={{ opacity: 0, y: 18 }}
+                initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.75, delay: 0.7 }}
+                transition={{ duration: 0.7, delay: 0.6 }}
                 onClick={handleEnter}
-                className="group relative mt-8 inline-flex items-center justify-center gap-3 px-7 py-4 rounded-2xl overflow-hidden bg-gradient-to-r from-shark-green to-shark-cyan text-shark-black font-black shadow-[0_0_38px_rgba(0,245,160,0.28)] hover:scale-[1.03] transition-transform"
+                className="group relative mt-5 sm:mt-6 inline-flex items-center justify-center gap-3 px-7 py-4 rounded-2xl overflow-hidden bg-gradient-to-r from-shark-green to-shark-cyan text-shark-black font-black shadow-[0_0_38px_rgba(0,245,160,0.28)] hover:scale-[1.03] transition-transform"
               >
                 <span className="absolute inset-0 bg-white/25 translate-x-[-120%] group-hover:translate-x-[120%] transition-transform duration-700 skew-x-12" />
                 <span className="relative z-10">Explore PrediShark</span>
@@ -310,7 +308,7 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
         </div>
 
         <motion.div
-          className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-shark-black via-shark-black/70 to-transparent"
+          className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-shark-black via-shark-black/70 to-transparent"
           animate={{ opacity: entering ? 0 : 1 }}
         />
       </motion.div>
