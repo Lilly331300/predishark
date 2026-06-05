@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 type IntroGatewayProps = {
   onComplete: () => void;
@@ -38,21 +38,21 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
 
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, []);
+    const startTimer = window.setTimeout(() => {
+      setEntering(true);
+    }, 3000);
 
-  const handleEnter = () => {
-    if (entering) return;
-
-    setEntering(true);
-
-    window.setTimeout(() => {
+    const finishTimer = window.setTimeout(() => {
       document.body.style.overflow = '';
       onComplete();
-    }, 2300);
-  };
+    }, 5300);
+
+    return () => {
+      window.clearTimeout(startTimer);
+      window.clearTimeout(finishTimer);
+      document.body.style.overflow = '';
+    };
+  }, [onComplete]);
 
   return (
     <AnimatePresence>
@@ -122,7 +122,7 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
           {Array.from({ length: 9 }).map((_, index) => (
             <motion.div
               key={index}
-              className="absolute h-px w-36 rounded-full bg-gradient-to-r from-transparent via-shark-cyan/70 to-transparent"
+              className="absolute h-px w-28 sm:w-36 rounded-full bg-gradient-to-r from-transparent via-shark-cyan/70 to-transparent"
               style={{
                 top: `${10 + index * 10}%`,
                 left: `${index % 2 === 0 ? -20 : 85}%`,
@@ -181,7 +181,7 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
             transition={{ duration: 0.45, ease: 'easeOut' }}
           >
             <motion.div
-              className="absolute w-[460px] h-[460px] sm:w-[640px] sm:h-[640px] lg:w-[820px] lg:h-[820px] rounded-full border border-shark-green/20"
+              className="absolute w-[320px] h-[320px] sm:w-[520px] sm:h-[520px] md:w-[640px] md:h-[640px] lg:w-[820px] lg:h-[820px] rounded-full border border-shark-green/20"
               animate={{
                 scale: entering ? [1, 1.7, 2.6] : [0.98, 1.04, 0.98],
                 opacity: entering ? [0.55, 0.25, 0] : [0.2, 0.42, 0.2],
@@ -195,7 +195,7 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
             />
 
             <motion.div
-              className="absolute w-[380px] h-[380px] sm:w-[560px] sm:h-[560px] lg:w-[720px] lg:h-[720px] rounded-full bg-shark-green/10 blur-[90px]"
+              className="absolute w-[280px] h-[280px] sm:w-[460px] sm:h-[460px] md:w-[560px] md:h-[560px] lg:w-[720px] lg:h-[720px] rounded-full bg-shark-green/10 blur-[70px] sm:blur-[90px]"
               animate={{
                 scale: entering ? [1, 1.6, 2.2] : [0.96, 1.08, 0.96],
                 opacity: entering ? [0.52, 0.28, 0] : [0.26, 0.5, 0.26],
@@ -212,7 +212,7 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
             <motion.img
               src="/assets/gateway/water-splash-overlay.png"
               alt=""
-              className="absolute w-[540px] sm:w-[740px] lg:w-[940px] opacity-0 pointer-events-none mix-blend-screen"
+              className="absolute w-[380px] sm:w-[560px] md:w-[740px] lg:w-[940px] opacity-0 pointer-events-none mix-blend-screen"
               animate={{
                 opacity: entering ? [0, 0.8, 0] : 0,
                 scale: entering ? [0.75, 1.15, 2.15] : 0.75,
@@ -255,13 +255,13 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
               <img
                 src="/assets/branding/predishark-fish-logo.png"
                 alt="PrediShark shark logo"
-                className="w-[250px] sm:w-[340px] md:w-[390px] lg:w-[455px] xl:w-[500px] mx-auto select-none"
+                className="w-[210px] sm:w-[300px] md:w-[360px] lg:w-[455px] xl:w-[500px] mx-auto select-none"
                 draggable={false}
               />
             </motion.div>
 
             <motion.div
-              className="relative z-30 mt-0 sm:mt-1 lg:mt-0"
+              className="relative z-30 mt-1 sm:mt-2 lg:mt-1"
               animate={{
                 opacity: entering ? 0 : 1,
                 y: entering ? 20 : 0,
@@ -273,9 +273,9 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.65, delay: 0.2 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-shark-green/20 text-shark-green text-[10px] sm:text-xs font-semibold uppercase tracking-[0.18em] mb-3"
+                className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full glass border border-shark-green/20 text-shark-green text-[9px] sm:text-xs font-semibold uppercase tracking-[0.14em] sm:tracking-[0.18em] mb-3"
               >
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 AI Football Prediction + Crypto Utility
               </motion.div>
 
@@ -292,7 +292,7 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.48 }}
-                className="mt-3 text-xs sm:text-sm lg:text-base text-shark-muted max-w-2xl mx-auto leading-7"
+                className="mt-3 text-xs sm:text-sm lg:text-base text-shark-muted max-w-2xl mx-auto leading-7 px-2"
               >
                 Premium football prediction intelligence, live data modules, and the $SHARK
                 crypto utility layer in one futuristic ecosystem.
@@ -301,18 +301,14 @@ export function IntroGateway({ onComplete }: IntroGatewayProps) {
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.6 }}
-                className="mt-5 flex justify-center"
+                transition={{ duration: 0.7, delay: 0.65 }}
+                className="mt-5 flex items-center justify-center gap-2 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.18em] text-shark-green"
               >
-                <button
-                  onClick={handleEnter}
-                  className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl overflow-hidden bg-gradient-to-r from-shark-green to-shark-cyan text-shark-black font-black shadow-[0_0_42px_rgba(0,245,160,0.35)] hover:scale-[1.035] transition-transform"
-                >
-                  <span className="absolute inset-0 bg-white/25 translate-x-[-120%] group-hover:translate-x-[120%] transition-transform duration-700 skew-x-12" />
-                  <span className="absolute inset-0 rounded-2xl border border-white/30" />
-                  <span className="relative z-10">Explore PrediShark</span>
-                  <ArrowRight className="relative z-10 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-shark-green opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-shark-green" />
+                </span>
+                Entering PrediShark.ai
               </motion.div>
             </motion.div>
           </motion.div>
