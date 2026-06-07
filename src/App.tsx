@@ -43,6 +43,7 @@ function LiveTickerMarquee() {
   const [hasError, setHasError] = useState(false);
   const [lastUpdated, setLastUpdated] = useState('');
   const [matchCount, setMatchCount] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const intervalRef = useRef<number | null>(null);
 
   const fallbackItems: LiveTickerFeedItem[] = [
@@ -117,6 +118,18 @@ function LiveTickerMarquee() {
     return `${time} | ${league} | ${home} vs ${away} | ${status}`;
   };
 
+  const getMarqueeDuration = () => {
+    if (isMobile) {
+      if (displayItems.length > 80) return 55;
+      if (displayItems.length > 30) return 42;
+      return 30;
+    }
+
+    if (displayItems.length > 80) return 130;
+    if (displayItems.length > 30) return 95;
+    return 55;
+  };
+
   const fetchFeed = async () => {
     try {
       const response = await fetch(LIVE_TICKER_FEED_URL, {
@@ -163,6 +176,20 @@ function LiveTickerMarquee() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkScreen();
+
+    window.addEventListener('resize', checkScreen);
+
+    return () => {
+      window.removeEventListener('resize', checkScreen);
+    };
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -222,7 +249,7 @@ function LiveTickerMarquee() {
           <motion.div
             animate={{ x: ['0%', '-50%'] }}
             transition={{
-              duration: displayItems.length > 80 ? 130 : displayItems.length > 30 ? 95 : 55,
+              duration: getMarqueeDuration(),
               repeat: Infinity,
               ease: 'linear',
             }}
