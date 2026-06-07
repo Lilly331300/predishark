@@ -70,9 +70,7 @@ function LiveTickerMarquee() {
 
   const normalizeFeed = (data: unknown): LiveTickerFeedResponse => {
     if (!data || typeof data !== 'object') {
-      return {
-        items: [],
-      };
+      return { items: [] };
     }
 
     const feed = data as LiveTickerFeedResponse;
@@ -116,18 +114,6 @@ function LiveTickerMarquee() {
     }
 
     return `${time} | ${league} | ${home} vs ${away} | ${status}`;
-  };
-
-  const getMarqueeDuration = () => {
-    if (isMobile) {
-      if (displayItems.length > 80) return 55;
-      if (displayItems.length > 30) return 42;
-      return 30;
-    }
-
-    if (displayItems.length > 80) return 130;
-    if (displayItems.length > 30) return 95;
-    return 55;
   };
 
   const fetchFeed = async () => {
@@ -183,7 +169,6 @@ function LiveTickerMarquee() {
     };
 
     checkScreen();
-
     window.addEventListener('resize', checkScreen);
 
     return () => {
@@ -225,6 +210,18 @@ function LiveTickerMarquee() {
   const displayItems = items.length > 0 ? items : fallbackItems;
   const repeatedItems = [...displayItems, ...displayItems, ...displayItems, ...displayItems];
 
+  const marqueeDuration = isMobile
+    ? displayItems.length > 80
+      ? 34
+      : displayItems.length > 30
+        ? 26
+        : 18
+    : displayItems.length > 80
+      ? 130
+      : displayItems.length > 30
+        ? 95
+        : 55;
+
   return (
     <section className="relative z-20 overflow-hidden border-y border-white/5 bg-shark-navy/80 backdrop-blur-xl">
       <div className="absolute inset-0 bg-gradient-to-r from-shark-green/5 via-transparent to-shark-cyan/5" />
@@ -247,27 +244,28 @@ function LiveTickerMarquee() {
 
         <div className="relative flex-1 overflow-hidden">
           <motion.div
+            key={`${isMobile ? 'mobile' : 'desktop'}-${displayItems.length}`}
             animate={{ x: ['0%', '-50%'] }}
             transition={{
-              duration: getMarqueeDuration(),
+              duration: marqueeDuration,
               repeat: Infinity,
               ease: 'linear',
             }}
-            className="flex items-center gap-8 py-3 whitespace-nowrap"
+            className="flex items-center gap-5 sm:gap-8 py-3 whitespace-nowrap"
           >
             {repeatedItems.map((item, index) => (
               <div
                 key={`${item.match_id || 'match'}-${index}`}
-                className="flex items-center gap-3 text-sm"
+                className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm"
               >
-                <span className="inline-flex items-center px-2 py-1 rounded-lg bg-white/[0.05] border border-white/10 text-[10px] uppercase tracking-[0.14em] text-shark-cyan font-semibold">
+                <span className="inline-flex items-center px-2 py-1 rounded-lg bg-white/[0.05] border border-white/10 text-[9px] sm:text-[10px] uppercase tracking-[0.12em] sm:tracking-[0.14em] text-shark-cyan font-semibold">
                   {item.country || 'Live'}
                 </span>
 
                 <span className="text-shark-white/90 font-medium">{getItemText(item)}</span>
 
                 <span
-                  className={`inline-flex items-center px-2 py-1 rounded-lg text-[10px] uppercase tracking-[0.14em] font-semibold ${
+                  className={`inline-flex items-center px-2 py-1 rounded-lg text-[9px] sm:text-[10px] uppercase tracking-[0.12em] sm:tracking-[0.14em] font-semibold ${
                     item.status === 'Not Started' || item.status === 'Planned'
                       ? 'bg-shark-gold/10 text-shark-gold border border-shark-gold/20'
                       : 'bg-shark-green/10 text-shark-green border border-shark-green/20'
@@ -281,8 +279,8 @@ function LiveTickerMarquee() {
             ))}
           </motion.div>
 
-          <div className="absolute inset-y-0 left-0 w-14 bg-gradient-to-r from-shark-navy to-transparent pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-14 bg-gradient-to-l from-shark-navy to-transparent pointer-events-none" />
+          <div className="absolute inset-y-0 left-0 w-10 sm:w-14 bg-gradient-to-r from-shark-navy to-transparent pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-10 sm:w-14 bg-gradient-to-l from-shark-navy to-transparent pointer-events-none" />
         </div>
 
         <div className="hidden md:flex relative z-10 flex-shrink-0 px-4 py-3 bg-shark-black/60 border-l border-white/10">
