@@ -16,6 +16,7 @@ import {
 import { ParticleBackground } from '@/components/ui/custom/ParticleBackground';
 
 const TELEGRAM_LINK = 'https://t.me/predishark';
+const X_LINK = 'https://x.com/predishark';
 
 const cryptoUtilities = [
   {
@@ -168,7 +169,34 @@ export function Hero() {
               <motion.div
                 initial={{ opacity: 0, y: 22 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.65, delay: 0.5 }}
+                transition={{ duration: 0.65, delay: 0.48 }}
+                className="mt-4 flex flex-wrap items-center gap-3"
+              >
+                <a
+                  href={X_LINK}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl glass border border-white/10 text-sm font-semibold text-shark-white hover:border-shark-green/30 hover:text-shark-green transition-all"
+                >
+                  <span className="text-sm font-black">𝕏</span>
+                  Follow @predishark
+                </a>
+
+                <a
+                  href={TELEGRAM_LINK}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl glass border border-white/10 text-sm font-semibold text-shark-white hover:border-shark-cyan/30 hover:text-shark-cyan transition-all"
+                >
+                  <Send className="w-4 h-4" />
+                  Telegram
+                </a>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 22 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.65, delay: 0.55 }}
                 className="mt-6 grid sm:grid-cols-2 gap-4 max-w-2xl"
               >
                 <div className="glass rounded-2xl p-4 border border-shark-green/20">

@@ -49,7 +49,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <img
-                src="/assets/branding/logo-mark.png"
+                src="/assets/branding/predishark-fish-logo.png"
                 alt="PrediShark.ai logo"
                 className="w-12 h-12 object-contain rounded-xl shadow-glow"
               />
@@ -66,7 +66,7 @@ export function Footer() {
               direct, and built for a premium sports-tech experience.
             </p>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
@@ -83,6 +83,16 @@ export function Footer() {
                   )}
                 </a>
               ))}
+
+              <a
+                href={X_LINK}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl glass border border-white/10 text-sm font-semibold text-shark-white hover:border-shark-green/30 hover:text-shark-green transition-all"
+              >
+                <span className="text-sm font-black">𝕏</span>
+                Follow @predishark
+              </a>
             </div>
           </div>
 
@@ -130,6 +140,17 @@ export function Footer() {
                   className="text-sm text-shark-muted hover:text-shark-green transition-colors flex items-center gap-1.5"
                 >
                   Megasino.win <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href={X_LINK}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm text-shark-muted hover:text-shark-green transition-colors flex items-center gap-1.5"
+                >
+                  X / Twitter <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
 

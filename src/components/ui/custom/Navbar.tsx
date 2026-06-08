@@ -168,6 +168,7 @@ export function Navbar() {
                     href={X_LINK}
                     target="_blank"
                     rel="noreferrer"
+                    aria-label="PrediShark.ai on X"
                     className="flex items-center justify-center h-12 rounded-2xl glass text-shark-muted hover:text-shark-green transition-all"
                   >
                     <span className="text-sm font-black">𝕏</span>
@@ -177,6 +178,7 @@ export function Navbar() {
                     href={TELEGRAM_LINK}
                     target="_blank"
                     rel="noreferrer"
+                    aria-label="PrediShark.ai Telegram"
                     className="flex items-center justify-center h-12 rounded-2xl glass text-shark-muted hover:text-shark-cyan transition-all"
                   >
                     <Send className="w-4 h-4" />
@@ -188,6 +190,28 @@ export function Navbar() {
                   >
                     <Copy className="w-4 h-4" />
                   </button>
+                </div>
+
+                <div className="mt-4 grid grid-cols-2 gap-3">
+                  <a
+                    href={X_LINK}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-white/[0.04] border border-white/10 text-sm font-semibold text-shark-white hover:border-shark-green/30 transition-all"
+                  >
+                    <span className="text-sm font-black">𝕏</span>
+                    Follow on X
+                  </a>
+
+                  <a
+                    href={TELEGRAM_LINK}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-white/[0.04] border border-white/10 text-sm font-semibold text-shark-white hover:border-shark-cyan/30 transition-all"
+                  >
+                    <Send className="w-4 h-4" />
+                    Telegram
+                  </a>
                 </div>
               </div>
             </div>
