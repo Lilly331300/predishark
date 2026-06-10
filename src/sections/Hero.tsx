@@ -176,20 +176,20 @@ export function Hero() {
                   href={X_LINK}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl glass border border-white/10 text-sm font-semibold text-shark-white hover:border-shark-green/30 hover:text-shark-green transition-all"
+                  aria-label="PrediShark.ai on X"
+                  className="w-11 h-11 rounded-xl glass border border-white/10 flex items-center justify-center text-shark-white hover:text-shark-green hover:border-shark-green/30 transition-all"
                 >
-                  <span className="text-sm font-black">𝕏</span>
-                  Follow @predishark
+                  <span className="text-base font-black">𝕏</span>
                 </a>
 
                 <a
                   href={TELEGRAM_LINK}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl glass border border-white/10 text-sm font-semibold text-shark-white hover:border-shark-cyan/30 hover:text-shark-cyan transition-all"
+                  aria-label="PrediShark.ai Telegram"
+                  className="w-11 h-11 rounded-xl glass border border-white/10 flex items-center justify-center text-shark-white hover:text-shark-cyan hover:border-shark-cyan/30 transition-all"
                 >
                   <Send className="w-4 h-4" />
-                  Telegram
                 </a>
               </motion.div>
 
