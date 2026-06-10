@@ -4,7 +4,7 @@ const WHITEPAPER_FILE = '/assets/docs/PrediShark_whitepaper.pdf';
 const TELEGRAM_LINK = 'https://t.me/predishark';
 const X_LINK = 'https://x.com/predishark';
 const MEGASINO_AFFILIATE_LINK =
-  'https://tracker.megasinopartners.com/link?btag=105954483_498295';
+  'https://tracker.megasinopartners.com/link?btag=105954483_498352';
 
 const footerLinks = [
   { label: 'Predictions', href: 'predictions', type: 'reveal' },
@@ -128,7 +128,6 @@ export function Footer() {
                 <a
                   href={MEGASINO_AFFILIATE_LINK}
                   target="_blank"
-                  rel="noreferrer"
                   className="text-sm text-shark-muted hover:text-shark-green transition-colors flex items-center gap-1.5"
                 >
                   Megasino Partner <ExternalLink className="w-3 h-3" />

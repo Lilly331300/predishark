@@ -68,13 +68,13 @@ const DEXSCREENER_SOLANA_TOKEN_URL = SHARK_CONTRACT_ADDRESS
   : '';
 
 const MEGASINO_AFFILIATE_LINK =
-  'https://tracker.megasinopartners.com/link?btag=105954483_498295';
+  'https://tracker.megasinopartners.com/link?btag=105954483_498352';
 
 const MEGASINO_PIXEL =
-  'https://tracker.megasinopartners.com/pixel.gif?btag=105954483_498295';
+  'https://tracker.megasinopartners.com/pixel.gif?btag=105954483_498352';
 
 const MEGASINO_BANNER =
-  'https://m.megasinopartners.com/skins/megasino/uploads/banners/banners_1773083867_10a76307b9f48a14847fdb5c503a34d9.jpg';
+  'https://megasinopartners.com/skins/megasino/uploads/banners/banners_1781083383_058c38976200fa0835cf3be3bdddf271.jpg';
 
 function formatCurrency(value?: number | string | null) {
   if (value === null || value === undefined || value === '') return 'Coming Soon';
@@ -132,6 +132,31 @@ function useScreenSpeed() {
   }, []);
 
   return speed;
+}
+
+function MegasinoExactEmbed({ compact = false }: { compact?: boolean }) {
+  return (
+    <>
+      <img
+        src={MEGASINO_PIXEL}
+        alt=""
+        aria-hidden="true"
+        style={{ position: 'absolute', visibility: 'hidden' }}
+      />
+
+      <a href={MEGASINO_AFFILIATE_LINK} target="_blank">
+        <img
+          src={MEGASINO_BANNER}
+          height="50"
+          width="320"
+          alt="Megasino"
+          className={`${
+            compact ? 'w-[260px] sm:w-[320px]' : 'w-[320px]'
+          } max-w-full h-auto rounded-lg border border-white/10 shadow-[0_0_22px_rgba(0,245,184,0.12)] hover:scale-[1.015] transition-transform`}
+        />
+      </a>
+    </>
+  );
 }
 
 function LiveTickerMarquee() {
@@ -400,13 +425,6 @@ function LiveTickerMarquee() {
 function FrontpageMegasinoBanner() {
   return (
     <section className="relative z-30 pt-24 lg:pt-28 pb-3 bg-shark-black border-b border-white/5">
-      <img
-        src={MEGASINO_PIXEL}
-        alt=""
-        aria-hidden="true"
-        style={{ position: 'absolute', visibility: 'hidden' }}
-      />
-
       <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-r from-shark-green/5 via-transparent to-shark-cyan/5" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -430,20 +448,9 @@ function FrontpageMegasinoBanner() {
               </div>
             </div>
 
-            <a
-              href={MEGASINO_AFFILIATE_LINK}
-              target="_blank"
-              rel="noreferrer"
-              className="group inline-flex items-center justify-center gap-3"
-            >
-              <img
-                src={MEGASINO_BANNER}
-                alt="Megasino"
-                width={320}
-                height={50}
-                className="w-[260px] sm:w-[320px] max-w-full h-auto rounded-lg border border-white/10 shadow-[0_0_22px_rgba(0,245,184,0.12)] group-hover:scale-[1.015] transition-transform"
-              />
-            </a>
+            <div className="relative">
+              <MegasinoExactEmbed compact />
+            </div>
           </div>
         </div>
       </div>

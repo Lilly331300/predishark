@@ -2,17 +2,17 @@ import { motion } from 'framer-motion';
 import { ExternalLink, Handshake, ShieldCheck, Sparkles } from 'lucide-react';
 
 const MEGASINO_AFFILIATE_LINK =
-  'https://tracker.megasinopartners.com/link?btag=105954483_498295';
+  'https://tracker.megasinopartners.com/link?btag=105954483_498352';
 
 const MEGASINO_PIXEL =
-  'https://tracker.megasinopartners.com/pixel.gif?btag=105954483_498295';
+  'https://tracker.megasinopartners.com/pixel.gif?btag=105954483_498352';
 
 const MEGASINO_BANNER =
-  'https://m.megasinopartners.com/skins/megasino/uploads/banners/banners_1773083867_10a76307b9f48a14847fdb5c503a34d9.jpg';
+  'https://megasinopartners.com/skins/megasino/uploads/banners/banners_1781083383_058c38976200fa0835cf3be3bdddf271.jpg';
 
-export function PartnerBanner() {
+function MegasinoExactEmbed() {
   return (
-    <section id="partners" className="relative py-16 lg:py-24">
+    <>
       <img
         src={MEGASINO_PIXEL}
         alt=""
@@ -20,6 +20,22 @@ export function PartnerBanner() {
         style={{ position: 'absolute', visibility: 'hidden' }}
       />
 
+      <a href={MEGASINO_AFFILIATE_LINK} target="_blank">
+        <img
+          src={MEGASINO_BANNER}
+          height="50"
+          width="320"
+          alt="Megasino"
+          className="w-[320px] max-w-full h-auto rounded-xl border border-white/10 shadow-[0_0_45px_rgba(0,245,184,0.18)] group-hover:scale-[1.04] transition-transform"
+        />
+      </a>
+    </>
+  );
+}
+
+export function PartnerBanner() {
+  return (
+    <section id="partners" className="relative py-16 lg:py-24">
       <div className="absolute inset-0 radial-glow-cyan opacity-40" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -80,7 +96,7 @@ export function PartnerBanner() {
                     <div>
                       <p className="text-sm font-bold text-shark-white">Partner Route</p>
                       <p className="mt-1 text-xs text-shark-muted leading-5">
-                        Direct affiliate banner connection.
+                        Direct PartnerMatrix banner connection.
                       </p>
                     </div>
                   </div>
@@ -105,7 +121,6 @@ export function PartnerBanner() {
               <a
                 href={MEGASINO_AFFILIATE_LINK}
                 target="_blank"
-                rel="noreferrer"
                 className="mt-7 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-shark-green to-shark-cyan text-shark-black font-black hover:opacity-90 transition-opacity"
               >
                 Visit Megasino
@@ -118,20 +133,9 @@ export function PartnerBanner() {
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(0,245,184,0.18),transparent_34%)]" />
 
                 <div className="relative z-10 flex flex-col items-center justify-center gap-5 min-h-[280px] sm:min-h-[340px]">
-                  <a
-                    href={MEGASINO_AFFILIATE_LINK}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group block"
-                  >
-                    <img
-                      src={MEGASINO_BANNER}
-                      alt="Megasino"
-                      width={320}
-                      height={50}
-                      className="w-[320px] max-w-full h-auto rounded-xl border border-white/10 shadow-[0_0_45px_rgba(0,245,184,0.18)] group-hover:scale-[1.04] transition-transform"
-                    />
-                  </a>
+                  <div className="relative group">
+                    <MegasinoExactEmbed />
+                  </div>
 
                   <div className="w-full max-w-md rounded-3xl border border-white/10 glass p-5 text-center">
                     <p className="text-xs uppercase tracking-[0.2em] text-shark-green font-black">
@@ -147,7 +151,6 @@ export function PartnerBanner() {
                   <a
                     href={MEGASINO_AFFILIATE_LINK}
                     target="_blank"
-                    rel="noreferrer"
                     className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl glass border border-white/10 text-shark-white font-semibold hover:border-shark-green/30 transition-all"
                   >
                     Open Partner Link
