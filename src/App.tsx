@@ -8,7 +8,18 @@ import { PartnerBanner } from '@/sections/PartnerBanner';
 import { Roadmap } from '@/sections/Roadmap';
 import { Footer } from '@/sections/Footer';
 import { IntroGateway } from '@/components/IntroGateway';
-import { ArrowUp, Activity, Wifi, AlertCircle, ExternalLink } from 'lucide-react';
+import {
+  ArrowUp,
+  Activity,
+  Wifi,
+  AlertCircle,
+  ExternalLink,
+  Radio,
+  CircleDollarSign,
+  BarChart3,
+  Droplets,
+  TrendingUp,
+} from 'lucide-react';
 
 type ActiveSection = 'predictions' | 'partners' | 'roadmap' | null;
 
@@ -35,7 +46,26 @@ type LiveTickerFeedResponse = {
   items?: LiveTickerFeedItem[];
 };
 
+type DexScreenerPair = {
+  url?: string;
+  priceUsd?: string | null;
+  marketCap?: number | null;
+  fdv?: number | null;
+  liquidity?: {
+    usd?: number;
+  } | null;
+  priceChange?: {
+    h24?: number;
+  } | null;
+};
+
 const LIVE_TICKER_FEED_URL = 'https://betpredictor.live/api/live-ticker/feed';
+
+const SHARK_CONTRACT_ADDRESS = '';
+
+const DEXSCREENER_SOLANA_TOKEN_URL = SHARK_CONTRACT_ADDRESS
+  ? `https://api.dexscreener.com/token-pairs/v1/solana/${SHARK_CONTRACT_ADDRESS}`
+  : '';
 
 const MEGASINO_AFFILIATE_LINK =
   'https://tracker.megasinopartners.com/link?btag=105954483_498295';
@@ -45,6 +75,41 @@ const MEGASINO_PIXEL =
 
 const MEGASINO_BANNER =
   'https://m.megasinopartners.com/skins/megasino/uploads/banners/banners_1773083867_10a76307b9f48a14847fdb5c503a34d9.jpg';
+
+function formatCurrency(value?: number | string | null) {
+  if (value === null || value === undefined || value === '') return 'Coming Soon';
+
+  const numericValue = typeof value === 'string' ? Number(value) : value;
+
+  if (!Number.isFinite(numericValue)) return 'Coming Soon';
+
+  if (numericValue < 0.01) return `$${numericValue.toFixed(8)}`;
+  if (numericValue < 1) return `$${numericValue.toFixed(6)}`;
+
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 4,
+  }).format(numericValue);
+}
+
+function formatCompactCurrency(value?: number | null) {
+  if (value === null || value === undefined || !Number.isFinite(value)) return 'Coming Soon';
+
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    notation: 'compact',
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
+function formatPercent(value?: number | null) {
+  if (value === null || value === undefined || !Number.isFinite(value)) return 'Coming Soon';
+
+  const sign = value > 0 ? '+' : '';
+  return `${sign}${value.toFixed(2)}%`;
+}
 
 function useScreenSpeed() {
   const [speed, setSpeed] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
@@ -101,17 +166,11 @@ function LiveTickerMarquee() {
   ];
 
   const normalizeFeed = (data: unknown): LiveTickerFeedResponse => {
-    if (!data || typeof data !== 'object') {
-      return {
-        items: [],
-      };
-    }
+    if (!data || typeof data !== 'object') return { items: [] };
 
     const feed = data as LiveTickerFeedResponse;
 
-    if (Array.isArray(feed.items)) {
-      return feed;
-    }
+    if (Array.isArray(feed.items)) return feed;
 
     if (Array.isArray(data)) {
       return {
@@ -392,6 +451,173 @@ function FrontpageMegasinoBanner() {
   );
 }
 
+function SharkTokenPriceMarquee() {
+  const [pair, setPair] = useState<DexScreenerPair | null>(null);
+  const [loading, setLoading] = useState(Boolean(SHARK_CONTRACT_ADDRESS));
+  const [error, setError] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState('');
+
+  const hasContractAddress = Boolean(SHARK_CONTRACT_ADDRESS);
+
+  useEffect(() => {
+    if (!hasContractAddress) {
+      setLoading(false);
+      return;
+    }
+
+    const fetchTokenPrice = async () => {
+      try {
+        setError(false);
+
+        const response = await fetch(DEXSCREENER_SOLANA_TOKEN_URL, {
+          headers: {
+            Accept: 'application/json',
+          },
+          cache: 'no-store',
+        });
+
+        if (!response.ok) {
+          throw new Error(`DEX Screener request failed with status ${response.status}`);
+        }
+
+        const data = (await response.json()) as DexScreenerPair[];
+
+        if (!Array.isArray(data) || data.length === 0) {
+          setPair(null);
+          setError(true);
+          return;
+        }
+
+        const bestPair = data
+          .filter((item) => item.priceUsd)
+          .sort((a, b) => (b.liquidity?.usd || 0) - (a.liquidity?.usd || 0))[0];
+
+        setPair(bestPair || data[0]);
+        setLastUpdated(
+          new Date().toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          })
+        );
+      } catch (err) {
+        console.error('Unable to load $SHARK token price marquee:', err);
+        setError(true);
+        setPair(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTokenPrice();
+
+    const interval = window.setInterval(() => {
+      fetchTokenPrice();
+    }, 60_000);
+
+    return () => window.clearInterval(interval);
+  }, [hasContractAddress]);
+
+  const price = pair?.priceUsd ? formatCurrency(pair.priceUsd) : 'Coming Soon';
+  const marketCap = pair?.marketCap
+    ? formatCompactCurrency(pair.marketCap)
+    : pair?.fdv
+      ? formatCompactCurrency(pair.fdv)
+      : 'After Launch';
+  const liquidity = pair?.liquidity?.usd ? formatCompactCurrency(pair.liquidity.usd) : 'After DEX';
+  const change = pair?.priceChange?.h24 !== undefined ? formatPercent(pair.priceChange.h24) : 'After Launch';
+
+  const statusText = !hasContractAddress
+    ? 'Waiting for official contract address'
+    : loading
+      ? 'Loading live price'
+      : error
+        ? 'Waiting for pair data'
+        : lastUpdated
+          ? `Updated ${lastUpdated}`
+          : 'Live';
+
+  const marqueeItems = [
+    `$SHARK Live Price: ${price}`,
+    `Market Cap: ${marketCap}`,
+    `Liquidity: ${liquidity}`,
+    `24h Change: ${change}`,
+    `Status: ${statusText}`,
+    'Contract Address: Coming Soon',
+    'Launching on Pump.fun',
+    'DEX market cap and liquidity tracking after migration',
+  ];
+
+  const repeatedItems = [
+    ...marqueeItems,
+    ...marqueeItems,
+    ...marqueeItems,
+    ...marqueeItems,
+    ...marqueeItems,
+    ...marqueeItems,
+  ];
+
+  return (
+    <section className="relative z-30 overflow-hidden border-b border-white/5 bg-shark-black/95">
+      <div className="absolute inset-0 bg-gradient-to-r from-shark-gold/5 via-shark-green/5 to-shark-cyan/5" />
+
+      <div className="relative flex items-center">
+        <div className="relative z-10 flex-shrink-0 px-3 sm:px-5 py-3 bg-shark-black/75 border-r border-white/10">
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-shark-gold opacity-75" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-shark-gold" />
+            </span>
+
+            <Radio className="hidden sm:block w-4 h-4 text-shark-gold" />
+
+            <span className="text-[10px] sm:text-xs font-black text-shark-gold uppercase tracking-[0.18em] whitespace-nowrap">
+              $SHARK
+            </span>
+          </div>
+        </div>
+
+        <div className="relative flex-1 overflow-hidden">
+          <motion.div
+            animate={{ x: ['0%', '-50%'] }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: 'linear',
+            }}
+            className="flex items-center gap-5 sm:gap-7 py-3 whitespace-nowrap will-change-transform"
+          >
+            {repeatedItems.map((item, index) => (
+              <div
+                key={`${item}-${index}`}
+                className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm"
+              >
+                <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-shark-gold/10 border border-shark-gold/20">
+                  {index % 4 === 0 ? (
+                    <CircleDollarSign className="w-3.5 h-3.5 text-shark-gold" />
+                  ) : index % 4 === 1 ? (
+                    <BarChart3 className="w-3.5 h-3.5 text-shark-cyan" />
+                  ) : index % 4 === 2 ? (
+                    <Droplets className="w-3.5 h-3.5 text-shark-green" />
+                  ) : (
+                    <TrendingUp className="w-3.5 h-3.5 text-shark-gold" />
+                  )}
+                </span>
+
+                <span className="text-shark-white/90 font-semibold">{item}</span>
+
+                <span className="w-1.5 h-1.5 rounded-full bg-shark-gold shadow-[0_0_12px_rgba(247,201,72,0.8)]" />
+              </div>
+            ))}
+          </motion.div>
+
+          <div className="absolute inset-y-0 left-0 w-10 sm:w-14 bg-gradient-to-r from-shark-black to-transparent pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-10 sm:w-14 bg-gradient-to-l from-shark-black to-transparent pointer-events-none" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ScrollToTop() {
   const [visible, setVisible] = useState(false);
 
@@ -492,6 +718,8 @@ function App() {
       <Navbar />
 
       <FrontpageMegasinoBanner />
+
+      <SharkTokenPriceMarquee />
 
       <Hero />
 
