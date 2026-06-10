@@ -3,6 +3,8 @@ import { ExternalLink, Send } from 'lucide-react';
 const WHITEPAPER_FILE = '/assets/docs/PrediShark_whitepaper.pdf';
 const TELEGRAM_LINK = 'https://t.me/predishark';
 const X_LINK = 'https://x.com/predishark';
+const MEGASINO_AFFILIATE_LINK =
+  'https://tracker.megasinopartners.com/link?btag=105954483_498295';
 
 const footerLinks = [
   { label: 'Predictions', href: 'predictions', type: 'reveal' },
@@ -124,12 +126,12 @@ export function Footer() {
 
               <li>
                 <a
-                  href="http://megasino.win/"
+                  href={MEGASINO_AFFILIATE_LINK}
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm text-shark-muted hover:text-shark-green transition-colors flex items-center gap-1.5"
                 >
-                  Megasino.win <ExternalLink className="w-3 h-3" />
+                  Megasino Partner <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
 

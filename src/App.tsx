@@ -340,7 +340,7 @@ function LiveTickerMarquee() {
 
 function FrontpageMegasinoBanner() {
   return (
-    <section className="relative z-20 py-5 border-b border-white/5 bg-shark-black">
+    <section className="relative z-30 pt-24 sm:pt-26 lg:pt-28 pb-3 bg-shark-black border-b border-white/5">
       <img
         src={MEGASINO_PIXEL}
         alt=""
@@ -348,46 +348,42 @@ function FrontpageMegasinoBanner() {
         style={{ position: 'absolute', visibility: 'hidden' }}
       />
 
-      <div className="absolute inset-0 bg-gradient-to-r from-shark-green/5 via-transparent to-shark-cyan/5" />
+      <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-r from-shark-green/5 via-transparent to-shark-cyan/5" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-3xl border border-shark-green/15 glass-strong p-4 sm:p-5">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(0,245,184,0.12),transparent_35%),radial-gradient(circle_at_80%_50%,rgba(0,184,255,0.1),transparent_35%)]" />
+        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.035] backdrop-blur-xl px-3 py-3 sm:px-4">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(0,245,184,0.09),transparent_35%),radial-gradient(circle_at_80%_50%,rgba(0,184,255,0.08),transparent_35%)]" />
 
-          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-4">
-            <div className="text-center lg:text-left">
-              <p className="text-[10px] sm:text-xs uppercase tracking-[0.22em] text-shark-green font-black">
-                Official Partner
-              </p>
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-3 text-center md:text-left">
+              <div className="hidden sm:flex w-9 h-9 rounded-xl bg-shark-green/10 border border-shark-green/20 items-center justify-center">
+                <ExternalLink className="w-4 h-4 text-shark-green" />
+              </div>
 
-              <h3 className="mt-1 text-lg sm:text-xl lg:text-2xl font-black text-shark-white">
-                Megasino Partner Access
-              </h3>
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-shark-green font-black">
+                  Partner Ad
+                </p>
 
-              <p className="mt-1 text-xs sm:text-sm text-shark-muted max-w-xl leading-6">
-                Sports betting, casino entertainment, and live gaming access through PrediShark’s
-                partner network.
-              </p>
+                <p className="text-xs sm:text-sm text-shark-muted leading-5">
+                  Megasino partner access for sports betting, casino games, and live entertainment.
+                </p>
+              </div>
             </div>
 
             <a
               href={MEGASINO_AFFILIATE_LINK}
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex flex-col sm:flex-row items-center gap-3"
+              className="group inline-flex items-center justify-center gap-3"
             >
               <img
                 src={MEGASINO_BANNER}
                 alt="Megasino"
                 width={320}
                 height={50}
-                className="w-[320px] max-w-full h-auto rounded-xl border border-white/10 shadow-[0_0_32px_rgba(0,245,184,0.14)] group-hover:scale-[1.02] transition-transform"
+                className="w-[260px] sm:w-[320px] max-w-full h-auto rounded-lg border border-white/10 shadow-[0_0_22px_rgba(0,245,184,0.12)] group-hover:scale-[1.015] transition-transform"
               />
-
-              <span className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-gradient-to-r from-shark-green to-shark-cyan text-shark-black font-black text-sm whitespace-nowrap">
-                Visit Partner
-                <ExternalLink className="w-4 h-4" />
-              </span>
             </a>
           </div>
         </div>
@@ -495,11 +491,11 @@ function App() {
     <div className="relative min-h-screen bg-shark-black text-shark-white overflow-x-hidden">
       <Navbar />
 
+      <FrontpageMegasinoBanner />
+
       <Hero />
 
       <LiveTickerMarquee />
-
-      <FrontpageMegasinoBanner />
 
       <AnimatedSection>
         <TokenSection />
