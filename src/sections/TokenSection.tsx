@@ -241,7 +241,7 @@ function LiveTokenPriceCard() {
   }, [hasContractAddress]);
 
   const statusText = !hasContractAddress
-    ? 'Waiting for official contract address'
+    ? 'Waiting for official CA'
     : loading
       ? 'Loading live price'
       : error
@@ -251,13 +251,13 @@ function LiveTokenPriceCard() {
           : 'Live';
 
   return (
-    <div className="relative overflow-hidden rounded-[28px] border border-shark-green/20 bg-white/[0.035] p-5 lg:p-6">
+    <div className="relative overflow-hidden rounded-[28px] border border-shark-green/20 bg-white/[0.035] p-4 sm:p-5 lg:p-6">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(0,245,184,0.14),transparent_34%),radial-gradient(circle_at_90%_30%,rgba(0,184,255,0.12),transparent_34%)]" />
 
-      <div className="relative z-10">
-        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-5">
-          <div>
-            <span className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-shark-green/10 border border-shark-green/20 text-shark-green text-[11px] font-semibold uppercase tracking-[0.16em] mb-4">
+      <div className="relative z-10 min-w-0">
+        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4 mb-5">
+          <div className="min-w-0">
+            <span className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-shark-green/10 border border-shark-green/20 text-shark-green text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] sm:tracking-[0.16em] mb-4">
               <Radio className="w-3.5 h-3.5" />
               Live Token Feed
             </span>
@@ -272,16 +272,16 @@ function LiveTokenPriceCard() {
             </p>
           </div>
 
-          <div className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-shark-black/50 px-4 py-3 text-xs uppercase tracking-[0.16em] text-shark-muted whitespace-nowrap">
-            <span className="relative flex h-2.5 w-2.5">
+          <div className="inline-flex w-fit max-w-full items-center gap-2 rounded-2xl border border-white/10 bg-shark-black/50 px-3 sm:px-4 py-3 text-[10px] sm:text-xs uppercase tracking-[0.13em] sm:tracking-[0.16em] text-shark-muted">
+            <span className="relative flex h-2.5 w-2.5 flex-shrink-0">
               <span className="absolute inline-flex h-full w-full rounded-full bg-shark-green opacity-75 animate-ping" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-shark-green" />
             </span>
-            {statusText}
+            <span className="break-words">{statusText}</span>
           </div>
         </div>
 
-        <div className="mb-5 rounded-2xl border border-white/10 bg-shark-black/40 p-4">
+        <div className="mb-5 rounded-2xl border border-white/10 bg-shark-black/40 p-4 min-w-0">
           <p className="text-[10px] uppercase tracking-[0.18em] text-shark-muted">
             Official Contract Address
           </p>
@@ -291,15 +291,15 @@ function LiveTokenPriceCard() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 min-[480px]:grid-cols-2 xl:grid-cols-4 gap-3">
           {priceCards.map((card) => (
             <div
               key={card.label}
-              className="rounded-2xl border border-white/10 bg-shark-black/40 p-4"
+              className="min-w-0 rounded-2xl border border-white/10 bg-shark-black/40 p-4 overflow-hidden"
             >
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 min-w-0">
                 <div
-                  className={`w-10 h-10 rounded-2xl border flex items-center justify-center ${
+                  className={`w-10 h-10 rounded-2xl border flex items-center justify-center flex-shrink-0 ${
                     card.tone === 'green'
                       ? 'bg-shark-green/10 border-shark-green/20 text-shark-green'
                       : card.tone === 'cyan'
@@ -310,12 +310,12 @@ function LiveTokenPriceCard() {
                   <card.icon className="w-5 h-5" />
                 </div>
 
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.18em] text-shark-muted">
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] uppercase tracking-[0.16em] text-shark-muted break-words">
                     {card.label}
                   </p>
 
-                  <p className="mt-1 text-base font-black text-shark-white">
+                  <p className="mt-1 text-sm sm:text-base font-black text-shark-white break-words leading-6">
                     {card.value}
                   </p>
                 </div>
@@ -324,13 +324,13 @@ function LiveTokenPriceCard() {
           ))}
         </div>
 
-        <div className="mt-5 rounded-2xl border border-shark-cyan/20 bg-shark-cyan/5 p-4">
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-shark-cyan/10 border border-shark-cyan/20 flex items-center justify-center">
+        <div className="mt-5 rounded-2xl border border-shark-cyan/20 bg-shark-cyan/5 p-4 min-w-0">
+          <div className="flex items-start gap-3 min-w-0">
+            <div className="w-10 h-10 rounded-2xl bg-shark-cyan/10 border border-shark-cyan/20 flex items-center justify-center flex-shrink-0">
               <Clock3 className="w-5 h-5 text-shark-cyan" />
             </div>
 
-            <div>
+            <div className="min-w-0">
               <p className="text-sm font-bold text-shark-white">
                 Upcoming Development Task
               </p>
@@ -380,9 +380,9 @@ export function TokenSection() {
             <div className="absolute inset-0 bg-gradient-to-br from-shark-card/95 via-shark-navy/90 to-shark-black/98" />
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-shark-gold/80 to-transparent" />
 
-            <div className="relative z-10 p-6 lg:p-8">
+            <div className="relative z-10 p-5 sm:p-6 lg:p-8">
               <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-8 lg:gap-10 items-start">
-                <div>
+                <div className="min-w-0">
                   <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-shark-gold/10 border border-shark-gold/20 text-shark-gold text-xs font-semibold uppercase tracking-[0.18em] mb-5">
                     <Coins className="w-4 h-4" />
                     $SHARK Token Overview
@@ -398,13 +398,13 @@ export function TokenSection() {
                     backbone of the PrediShark ecosystem.
                   </p>
 
-                  <div className="mt-6 rounded-3xl border border-white/10 bg-white/[0.035] p-5">
+                  <div className="mt-6 rounded-3xl border border-white/10 bg-white/[0.035] p-5 min-w-0">
                     <p className="text-xs uppercase tracking-[0.18em] text-shark-muted">
                       Contract Address CA
                     </p>
 
-                    <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-3">
-                      <div className="flex-1 text-sm text-shark-white bg-shark-black/50 border border-white/10 rounded-2xl px-4 py-3">
+                    <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-3 min-w-0">
+                      <div className="flex-1 min-w-0 text-sm text-shark-white bg-shark-black/50 border border-white/10 rounded-2xl px-4 py-3 break-all">
                         {SHARK_CONTRACT_ADDRESS || 'Contract Address Coming Soon'}
                       </div>
 
@@ -419,23 +419,23 @@ export function TokenSection() {
                   </div>
                 </div>
 
-                <div>
+                <div className="min-w-0">
                   <div className="grid sm:grid-cols-2 gap-4">
                     {tokenStats.map((item) => (
                       <div
                         key={item.label}
-                        className="rounded-2xl border border-white/10 bg-white/[0.035] p-4"
+                        className="rounded-2xl border border-white/10 bg-white/[0.035] p-4 min-w-0"
                       >
-                        <div className="flex items-start gap-3">
-                          <div className="w-10 h-10 rounded-2xl bg-shark-green/10 border border-shark-green/20 flex items-center justify-center">
+                        <div className="flex items-start gap-3 min-w-0">
+                          <div className="w-10 h-10 rounded-2xl bg-shark-green/10 border border-shark-green/20 flex items-center justify-center flex-shrink-0">
                             <item.icon className="w-5 h-5 text-shark-green" />
                           </div>
 
-                          <div>
+                          <div className="min-w-0">
                             <p className="text-[10px] uppercase tracking-[0.18em] text-shark-muted">
                               {item.label}
                             </p>
-                            <p className="mt-1 text-lg font-black text-shark-white">
+                            <p className="mt-1 text-lg font-black text-shark-white break-words">
                               {item.value}
                             </p>
                             <p className="mt-1 text-xs text-shark-muted leading-5">
@@ -451,14 +451,14 @@ export function TokenSection() {
                     {utilityItems.map((item) => (
                       <div
                         key={item.title}
-                        className="rounded-2xl border border-white/10 bg-white/[0.035] p-4"
+                        className="rounded-2xl border border-white/10 bg-white/[0.035] p-4 min-w-0"
                       >
-                        <div className="flex items-start gap-3">
-                          <div className="w-10 h-10 rounded-2xl bg-shark-cyan/10 border border-shark-cyan/20 flex items-center justify-center">
+                        <div className="flex items-start gap-3 min-w-0">
+                          <div className="w-10 h-10 rounded-2xl bg-shark-cyan/10 border border-shark-cyan/20 flex items-center justify-center flex-shrink-0">
                             <item.icon className="w-5 h-5 text-shark-cyan" />
                           </div>
 
-                          <div>
+                          <div className="min-w-0">
                             <h4 className="text-base font-bold text-shark-white">
                               {item.title}
                             </h4>
@@ -479,11 +479,11 @@ export function TokenSection() {
 
               <div className="mt-8 rounded-3xl border border-shark-cyan/20 bg-shark-cyan/5 p-5">
                 <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-shark-cyan/10 border border-shark-cyan/20 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-2xl bg-shark-cyan/10 border border-shark-cyan/20 flex items-center justify-center flex-shrink-0">
                     <TrendingUp className="w-6 h-6 text-shark-cyan" />
                   </div>
 
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <p className="text-xs uppercase tracking-[0.18em] text-shark-cyan font-semibold">
                       Growth Flywheel
                     </p>
@@ -492,7 +492,7 @@ export function TokenSection() {
                     </p>
                   </div>
 
-                  <ArrowRight className="hidden lg:block w-6 h-6 text-shark-green" />
+                  <ArrowRight className="hidden lg:block w-6 h-6 text-shark-green flex-shrink-0" />
                 </div>
               </div>
             </div>
@@ -515,7 +515,7 @@ export function TokenSection() {
               className="relative z-10 max-w-xl w-full glass-strong rounded-3xl p-6 lg:p-8 border border-shark-gold/20"
             >
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-12 h-12 rounded-2xl bg-shark-gold/15 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-2xl bg-shark-gold/15 flex items-center justify-center flex-shrink-0">
                   <AlertTriangle className="w-6 h-6 text-shark-gold" />
                 </div>
 

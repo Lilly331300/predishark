@@ -210,9 +210,9 @@ function LiveTickerMarquee() {
   };
 
   const getMarqueeDuration = () => {
-    if (screenSpeed === 'mobile') return 14;
-    if (screenSpeed === 'tablet') return 18;
-    return 24;
+    if (screenSpeed === 'mobile') return 7;
+    if (screenSpeed === 'tablet') return 10;
+    return 15;
   };
 
   const fetchFeed = async () => {
@@ -297,10 +297,10 @@ function LiveTickerMarquee() {
 
   const optimizedItems =
     screenSpeed === 'mobile'
-      ? displayItems.slice(0, 35)
+      ? displayItems.slice(0, 22)
       : screenSpeed === 'tablet'
-        ? displayItems.slice(0, 50)
-        : displayItems.slice(0, 70);
+        ? displayItems.slice(0, 35)
+        : displayItems.slice(0, 55);
 
   const repeatedItems = [
     ...optimizedItems,
@@ -339,21 +339,21 @@ function LiveTickerMarquee() {
               repeat: Infinity,
               ease: 'linear',
             }}
-            className="flex items-center gap-5 sm:gap-8 py-3 whitespace-nowrap will-change-transform"
+            className="flex items-center gap-4 sm:gap-7 py-3 whitespace-nowrap will-change-transform"
           >
             {repeatedItems.map((item, index) => (
               <div
                 key={`${item.match_id || 'match'}-${index}`}
-                className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm"
+                className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-sm"
               >
-                <span className="inline-flex items-center px-2 py-1 rounded-lg bg-white/[0.05] border border-white/10 text-[9px] sm:text-[10px] uppercase tracking-[0.12em] sm:tracking-[0.14em] text-shark-cyan font-semibold">
+                <span className="inline-flex items-center px-2 py-1 rounded-lg bg-white/[0.05] border border-white/10 text-[8px] sm:text-[10px] uppercase tracking-[0.12em] sm:tracking-[0.14em] text-shark-cyan font-semibold">
                   {item.country || 'Live'}
                 </span>
 
                 <span className="text-shark-white/90 font-medium">{getItemText(item)}</span>
 
                 <span
-                  className={`inline-flex items-center px-2 py-1 rounded-lg text-[9px] sm:text-[10px] uppercase tracking-[0.12em] sm:tracking-[0.14em] font-semibold ${
+                  className={`inline-flex items-center px-2 py-1 rounded-lg text-[8px] sm:text-[10px] uppercase tracking-[0.12em] sm:tracking-[0.14em] font-semibold ${
                     item.status === 'Not Started' || item.status === 'Planned'
                       ? 'bg-shark-gold/10 text-shark-gold border border-shark-gold/20'
                       : 'bg-shark-green/10 text-shark-green border border-shark-green/20'
@@ -367,8 +367,8 @@ function LiveTickerMarquee() {
             ))}
           </motion.div>
 
-          <div className="absolute inset-y-0 left-0 w-10 sm:w-14 bg-gradient-to-r from-shark-navy to-transparent pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-10 sm:w-14 bg-gradient-to-l from-shark-navy to-transparent pointer-events-none" />
+          <div className="absolute inset-y-0 left-0 w-8 sm:w-14 bg-gradient-to-r from-shark-navy to-transparent pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-8 sm:w-14 bg-gradient-to-l from-shark-navy to-transparent pointer-events-none" />
         </div>
 
         <div className="hidden md:flex relative z-10 flex-shrink-0 px-4 py-3 bg-shark-black/60 border-l border-white/10">
@@ -399,7 +399,7 @@ function LiveTickerMarquee() {
 
 function FrontpageMegasinoBanner() {
   return (
-    <section className="relative z-30 pt-24 sm:pt-26 lg:pt-28 pb-3 bg-shark-black border-b border-white/5">
+    <section className="relative z-30 pt-24 lg:pt-28 pb-3 bg-shark-black border-b border-white/5">
       <img
         src={MEGASINO_PIXEL}
         alt=""
@@ -452,6 +452,7 @@ function FrontpageMegasinoBanner() {
 }
 
 function SharkTokenPriceMarquee() {
+  const screenSpeed = useScreenSpeed();
   const [pair, setPair] = useState<DexScreenerPair | null>(null);
   const [loading, setLoading] = useState(Boolean(SHARK_CONTRACT_ADDRESS));
   const [error, setError] = useState(false);
@@ -536,6 +537,12 @@ function SharkTokenPriceMarquee() {
           ? `Updated ${lastUpdated}`
           : 'Live';
 
+  const getTokenMarqueeDuration = () => {
+    if (screenSpeed === 'mobile') return 6;
+    if (screenSpeed === 'tablet') return 9;
+    return 14;
+  };
+
   const marqueeItems = [
     `$SHARK Live Price: ${price}`,
     `Market Cap: ${marketCap}`,
@@ -580,18 +587,18 @@ function SharkTokenPriceMarquee() {
           <motion.div
             animate={{ x: ['0%', '-50%'] }}
             transition={{
-              duration: 20,
+              duration: getTokenMarqueeDuration(),
               repeat: Infinity,
               ease: 'linear',
             }}
-            className="flex items-center gap-5 sm:gap-7 py-3 whitespace-nowrap will-change-transform"
+            className="flex items-center gap-4 sm:gap-7 py-3 whitespace-nowrap will-change-transform"
           >
             {repeatedItems.map((item, index) => (
               <div
                 key={`${item}-${index}`}
-                className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm"
+                className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-sm"
               >
-                <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-shark-gold/10 border border-shark-gold/20">
+                <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-shark-gold/10 border border-shark-gold/20 flex-shrink-0">
                   {index % 4 === 0 ? (
                     <CircleDollarSign className="w-3.5 h-3.5 text-shark-gold" />
                   ) : index % 4 === 1 ? (
@@ -605,13 +612,13 @@ function SharkTokenPriceMarquee() {
 
                 <span className="text-shark-white/90 font-semibold">{item}</span>
 
-                <span className="w-1.5 h-1.5 rounded-full bg-shark-gold shadow-[0_0_12px_rgba(247,201,72,0.8)]" />
+                <span className="w-1.5 h-1.5 rounded-full bg-shark-gold shadow-[0_0_12px_rgba(247,201,72,0.8)] flex-shrink-0" />
               </div>
             ))}
           </motion.div>
 
-          <div className="absolute inset-y-0 left-0 w-10 sm:w-14 bg-gradient-to-r from-shark-black to-transparent pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-10 sm:w-14 bg-gradient-to-l from-shark-black to-transparent pointer-events-none" />
+          <div className="absolute inset-y-0 left-0 w-8 sm:w-14 bg-gradient-to-r from-shark-black to-transparent pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-8 sm:w-14 bg-gradient-to-l from-shark-black to-transparent pointer-events-none" />
         </div>
       </div>
     </section>
