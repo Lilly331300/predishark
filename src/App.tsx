@@ -19,6 +19,8 @@ import {
   BarChart3,
   Droplets,
   TrendingUp,
+  PlayCircle,
+  Video,
 } from 'lucide-react';
 
 type ActiveSection = 'predictions' | 'partners' | 'roadmap' | null;
@@ -66,6 +68,12 @@ const SHARK_CONTRACT_ADDRESS = '';
 const DEXSCREENER_SOLANA_TOKEN_URL = SHARK_CONTRACT_ADDRESS
   ? `https://api.dexscreener.com/token-pairs/v1/solana/${SHARK_CONTRACT_ADDRESS}`
   : '';
+
+const GOOGLE_DRIVE_VIDEO_EMBED =
+  'https://drive.google.com/file/d/1iGRJRlUn-QD9Tu1knLjPx6iDMog47fxK/preview';
+
+const GOOGLE_DRIVE_VIDEO_LINK =
+  'https://drive.google.com/file/d/1iGRJRlUn-QD9Tu1knLjPx6iDMog47fxK/view?usp=sharing';
 
 const MEGASINO_AFFILIATE_LINK =
   'https://tracker.megasinopartners.com/link?btag=105954483_498352';
@@ -632,6 +640,85 @@ function SharkTokenPriceMarquee() {
   );
 }
 
+function ProjectVideoSection() {
+  return (
+    <section id="project-video" className="relative py-16 lg:py-20">
+      <div className="absolute inset-0 radial-glow-cyan opacity-30" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.65 }}
+          className="relative overflow-hidden rounded-[32px] border border-shark-cyan/20 glass-strong"
+        >
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(0,245,184,0.12),transparent_34%),radial-gradient(circle_at_80%_40%,rgba(0,184,255,0.14),transparent_36%),linear-gradient(135deg,rgba(4,7,10,0.98),rgba(8,19,26,0.94))]" />
+          <div className="absolute inset-0 grid-bg opacity-20" />
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-shark-cyan/80 to-transparent" />
+
+          <div className="relative z-10 p-5 sm:p-7 lg:p-9">
+            <div className="grid lg:grid-cols-[0.75fr_1.25fr] gap-8 lg:gap-10 items-center">
+              <div>
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-shark-cyan/10 border border-shark-cyan/20 text-shark-cyan text-xs font-semibold uppercase tracking-[0.18em] mb-5">
+                  <Video className="w-4 h-4" />
+                  Project Explainer
+                </span>
+
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-shark-white leading-tight">
+                  See how <span className="gradient-text">PrediShark.ai</span> works
+                </h2>
+
+                <p className="mt-5 text-shark-muted leading-8">
+                  Watch a quick project walkthrough showing how PrediShark brings AI football
+                  prediction intelligence, live data, token utility, and partner access together
+                  in one clean ecosystem.
+                </p>
+
+                <a
+                  href={GOOGLE_DRIVE_VIDEO_LINK}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-7 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-shark-green to-shark-cyan text-shark-black font-black hover:opacity-90 transition-opacity"
+                >
+                  Open Video
+                  <ExternalLink className="w-5 h-5" />
+                </a>
+              </div>
+
+              <div className="relative">
+                <div className="absolute -inset-4 rounded-[34px] bg-shark-cyan/10 blur-3xl" />
+
+                <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-shark-black/70 shadow-[0_0_45px_rgba(0,217,255,0.12)]">
+                  <div className="absolute left-4 top-4 z-20 inline-flex items-center gap-2 rounded-full bg-black/50 backdrop-blur-md border border-white/10 px-3 py-2 text-xs font-semibold text-shark-white">
+                    <PlayCircle className="w-4 h-4 text-shark-green" />
+                    Watch Explainer
+                  </div>
+
+                  <div className="relative aspect-video w-full">
+                    <iframe
+                      src={GOOGLE_DRIVE_VIDEO_EMBED}
+                      title="PrediShark.ai project explainer video"
+                      allow="autoplay; encrypted-media; fullscreen"
+                      allowFullScreen
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full"
+                    />
+                  </div>
+                </div>
+
+                <p className="mt-3 text-xs text-shark-muted text-center">
+                  Make sure the Google Drive video sharing permission is set to “Anyone with the link can view”.
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 function ScrollToTop() {
   const [visible, setVisible] = useState(false);
 
@@ -741,6 +828,10 @@ function App() {
 
       <AnimatedSection>
         <TokenSection />
+      </AnimatedSection>
+
+      <AnimatedSection>
+        <ProjectVideoSection />
       </AnimatedSection>
 
       <AnimatePresence mode="wait">

@@ -4,7 +4,7 @@ import {
   Copy,
   AlertTriangle,
   Coins,
-  ShieldCheck,
+
   Lock,
   RefreshCw,
   Vote,
@@ -17,6 +17,7 @@ import {
   Droplets,
   Clock3,
   Activity,
+  Rocket,
 } from 'lucide-react';
 
 const SHARK_CONTRACT_ADDRESS = '';
@@ -54,7 +55,13 @@ const tokenStats = [
     icon: Coins,
     label: 'Token',
     value: '$SHARK',
-    detail: 'Native utility token',
+    detail: 'PrediShark utility token',
+  },
+  {
+    icon: Rocket,
+    label: 'Launch',
+    value: 'Pump.fun',
+    detail: 'Public token launch route',
   },
   {
     icon: CircleDollarSign,
@@ -67,12 +74,6 @@ const tokenStats = [
     label: 'Minting',
     value: 'Fixed',
     detail: 'No additional minting',
-  },
-  {
-    icon: ShieldCheck,
-    label: 'Chain',
-    value: 'Solana SPL',
-    detail: 'Fast scalable token standard',
   },
 ];
 
@@ -136,7 +137,7 @@ function formatPercent(value?: number | null) {
 }
 
 function shortenAddress(address: string) {
-  if (!address) return 'Contract Address Coming Soon';
+  if (!address) return 'Official CA will appear after launch confirmation';
   return `${address.slice(0, 6)}...${address.slice(-6)}`;
 }
 
@@ -153,7 +154,7 @@ function LiveTokenPriceCard() {
       {
         icon: CircleDollarSign,
         label: 'Live Price',
-        value: pair?.priceUsd ? formatCurrency(pair.priceUsd) : 'Coming Soon',
+        value: pair?.priceUsd ? formatCurrency(pair.priceUsd) : 'Activates After CA',
         tone: 'green',
       },
       {
@@ -267,8 +268,9 @@ function LiveTokenPriceCard() {
             </h3>
 
             <p className="mt-2 text-sm text-shark-muted leading-7 max-w-2xl">
-              Live price tracking will activate once the official $SHARK contract address is
-              available. Market cap and liquidity can be shown after pair data becomes available.
+              $SHARK launches through Pump.fun. Live price tracking will activate when the official
+              contract address is added to the website. Market cap and liquidity can expand after
+              DEX pair data becomes available.
             </p>
           </div>
 
@@ -332,11 +334,11 @@ function LiveTokenPriceCard() {
 
             <div className="min-w-0">
               <p className="text-sm font-bold text-shark-white">
-                Upcoming Development Task
+                Live Launch Development
               </p>
               <p className="mt-1 text-sm text-shark-muted leading-7">
-                Add live $SHARK token price from the official contract address, then extend the
-                card with market cap, liquidity, volume, and 24h change after DEX migration.
+                After the official $SHARK CA is confirmed, live price tracking can display price,
+                market cap, liquidity, volume, and 24h change from available trading data.
               </p>
             </div>
           </div>
@@ -389,13 +391,13 @@ export function TokenSection() {
                   </span>
 
                   <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-shark-white leading-tight">
-                    PrediShark Native <span className="gradient-text">Utility Token</span>
+                    PrediShark <span className="gradient-text">Utility Token</span>
                   </h2>
 
                   <p className="mt-5 text-shark-muted text-base leading-8">
                     PrediShark introduces <span className="text-shark-white font-semibold">$SHARK</span> as
-                    its native utility token on the Solana blockchain. It serves as the economic
-                    backbone of the PrediShark ecosystem.
+                    the utility token powering rewards, partner access, buybacks, community activity,
+                    and future platform features. The token launch route is now Pump.fun.
                   </p>
 
                   <div className="mt-6 rounded-3xl border border-white/10 bg-white/[0.035] p-5 min-w-0">
@@ -405,7 +407,7 @@ export function TokenSection() {
 
                     <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-3 min-w-0">
                       <div className="flex-1 min-w-0 text-sm text-shark-white bg-shark-black/50 border border-white/10 rounded-2xl px-4 py-3 break-all">
-                        {SHARK_CONTRACT_ADDRESS || 'Contract Address Coming Soon'}
+                        {SHARK_CONTRACT_ADDRESS || 'Official CA will be added after launch confirmation'}
                       </div>
 
                       <button
@@ -521,19 +523,19 @@ export function TokenSection() {
 
                 <div>
                   <h3 className="text-xl font-bold text-shark-white">
-                    Contract Address Coming Soon
+                    Official Contract Address
                   </h3>
                   <p className="text-sm text-shark-muted">
-                    Please wait for the official launch notice.
+                    Use only the official PrediShark.ai launch information.
                   </p>
                 </div>
               </div>
 
               <div className="space-y-4 text-sm text-shark-muted leading-7">
-                <p className="text-shark-white font-medium">Coming soon!</p>
+                <p className="text-shark-white font-medium">Launch update</p>
                 <p>
-                  The official PrediShark.ai contract address is not live yet. Please only use the
-                  address announced through official PrediShark.ai channels.
+                  $SHARK is launching through Pump.fun. The official contract address will be shown
+                  on PrediShark.ai and official social channels when confirmed.
                 </p>
                 <p>
                   Always verify before interacting with any token or contract. Avoid fake addresses,

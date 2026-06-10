@@ -23,7 +23,7 @@ const cryptoUtilities = [
     icon: Copy,
     label: 'Token Address',
     value: 'Copy contract address',
-    helper: 'Official CA will be added after launch confirmation.',
+    helper: 'Official $SHARK CA will be added once launch details are confirmed.',
     type: 'copy',
     accent: 'green',
   },
@@ -38,8 +38,8 @@ const cryptoUtilities = [
   {
     icon: Gamepad2,
     label: 'Casino Utility',
-    value: 'Online casino usage',
-    helper: '$SHARK can be used across supported casino and partner services.',
+    value: 'Partner platform use',
+    helper: '$SHARK supports approved casino, partner, and platform utility.',
     type: 'info',
     accent: 'gold',
   },
@@ -47,7 +47,7 @@ const cryptoUtilities = [
     icon: CalendarDays,
     label: 'Community Events',
     value: 'Regular reward events',
-    helper: 'Community campaigns, competitions, and ecosystem activity.',
+    helper: 'Community campaigns, prediction events, and ecosystem activity.',
     type: 'info',
     accent: 'green',
   },
@@ -115,7 +115,7 @@ export function Hero() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-shark-green opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-shark-green" />
                 </span>
-                Prediction Intelligence
+                Website Live
               </motion.div>
 
               <motion.h1
@@ -137,8 +137,9 @@ export function Hero() {
                 transition={{ duration: 0.65, delay: 0.3 }}
                 className="mt-5 text-base lg:text-lg text-shark-muted max-w-xl leading-8"
               >
-                AI-powered football predictions, real-time statistics, mathematical prediction
-                tools, and transparent performance logic built for smarter match decisions.
+                PrediShark.ai is live with AI-powered football prediction intelligence, real-time
+                match data, mathematical tools, transparent performance logic, and the $SHARK
+                token layer launching through Pump.fun.
               </motion.p>
 
               <motion.div
@@ -269,13 +270,14 @@ export function Hero() {
                       </h3>
 
                       <p className="mt-2 text-sm text-shark-muted leading-7 max-w-md">
-                        Rewards, casino usage, community events, and buyback utility in one clear token layer.
+                        $SHARK is the PrediShark utility layer launching through Pump.fun, supporting
+                        rewards, buybacks, partner access, and community growth.
                       </p>
                     </div>
 
                     <span className="inline-flex w-fit items-center justify-center gap-2 px-3.5 py-2 rounded-full bg-shark-gold/10 border border-shark-gold/20 text-shark-gold text-[11px] font-semibold uppercase tracking-[0.16em] whitespace-nowrap">
                       <Sparkles className="w-3.5 h-3.5" />
-                      Solana SPL
+                      Pump.fun Launch
                     </span>
                   </div>
 
@@ -297,7 +299,7 @@ export function Hero() {
 
                           <div>
                             <p className="text-xs uppercase tracking-[0.18em] text-shark-green font-semibold">
-                              Native Utility Token
+                              Pump.fun Utility Launch
                             </p>
                             <p className="mt-1 text-sm text-shark-white font-medium">
                               $SHARK powers rewards, buybacks, payments, and community activity.
@@ -378,16 +380,20 @@ export function Hero() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold text-shark-white">Contract Address Coming Soon</h3>
-                  <p className="text-sm text-shark-muted">Please wait for the official launch notice.</p>
+                  <h3 className="text-xl font-bold text-shark-white">
+                    Official Contract Address
+                  </h3>
+                  <p className="text-sm text-shark-muted">
+                    Use only the official PrediShark.ai launch information.
+                  </p>
                 </div>
               </div>
 
               <div className="space-y-4 text-sm text-shark-muted leading-7">
-                <p className="text-shark-white font-medium">Coming soon!</p>
+                <p className="text-shark-white font-medium">Launch update</p>
                 <p>
-                  The official PrediShark.ai contract address is not live yet. Please only use the
-                  address announced through official PrediShark.ai channels.
+                  $SHARK is launching through Pump.fun. The official contract address will be shown
+                  on PrediShark.ai and official social channels when confirmed.
                 </p>
                 <p>
                   Always verify before interacting with any token or contract. Avoid fake addresses,
