@@ -8,6 +8,7 @@ import { PartnerBanner } from '@/sections/PartnerBanner';
 import { Roadmap } from '@/sections/Roadmap';
 import { Footer } from '@/sections/Footer';
 import { IntroGateway } from '@/components/IntroGateway';
+import { useSharkDexData } from '@/hooks/useSharkDexData';
 import {
   ArrowUp,
   Activity,
@@ -48,26 +49,7 @@ type LiveTickerFeedResponse = {
   items?: LiveTickerFeedItem[];
 };
 
-type DexScreenerPair = {
-  url?: string;
-  priceUsd?: string | null;
-  marketCap?: number | null;
-  fdv?: number | null;
-  liquidity?: {
-    usd?: number;
-  } | null;
-  priceChange?: {
-    h24?: number;
-  } | null;
-};
-
 const LIVE_TICKER_FEED_URL = 'https://betpredictor.live/api/live-ticker/feed';
-
-const SHARK_CONTRACT_ADDRESS = '';
-
-const DEXSCREENER_SOLANA_TOKEN_URL = SHARK_CONTRACT_ADDRESS
-  ? `https://api.dexscreener.com/token-pairs/v1/solana/${SHARK_CONTRACT_ADDRESS}`
-  : '';
 
 const GOOGLE_DRIVE_VIDEO_EMBED =
   'https://drive.google.com/file/d/1iGRJRlUn-QD9Tu1knLjPx6iDMog47fxK/preview';
@@ -83,41 +65,6 @@ const MEGASINO_PIXEL =
 
 const MEGASINO_BANNER =
   'https://megasinopartners.com/skins/megasino/uploads/banners/banners_1781083383_058c38976200fa0835cf3be3bdddf271.jpg';
-
-function formatCurrency(value?: number | string | null) {
-  if (value === null || value === undefined || value === '') return 'Coming Soon';
-
-  const numericValue = typeof value === 'string' ? Number(value) : value;
-
-  if (!Number.isFinite(numericValue)) return 'Coming Soon';
-
-  if (numericValue < 0.01) return `$${numericValue.toFixed(8)}`;
-  if (numericValue < 1) return `$${numericValue.toFixed(6)}`;
-
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 4,
-  }).format(numericValue);
-}
-
-function formatCompactCurrency(value?: number | null) {
-  if (value === null || value === undefined || !Number.isFinite(value)) return 'Coming Soon';
-
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    notation: 'compact',
-    maximumFractionDigits: 2,
-  }).format(value);
-}
-
-function formatPercent(value?: number | null) {
-  if (value === null || value === undefined || !Number.isFinite(value)) return 'Coming Soon';
-
-  const sign = value > 0 ? '+' : '';
-  return `${sign}${value.toFixed(2)}%`;
-}
 
 function useScreenSpeed() {
   const [speed, setSpeed] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
@@ -468,89 +415,7 @@ function FrontpageMegasinoBanner() {
 
 function SharkTokenPriceMarquee() {
   const screenSpeed = useScreenSpeed();
-  const [pair, setPair] = useState<DexScreenerPair | null>(null);
-  const [loading, setLoading] = useState(Boolean(SHARK_CONTRACT_ADDRESS));
-  const [error, setError] = useState(false);
-  const [lastUpdated, setLastUpdated] = useState('');
-
-  const hasContractAddress = Boolean(SHARK_CONTRACT_ADDRESS);
-
-  useEffect(() => {
-    if (!hasContractAddress) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchTokenPrice = async () => {
-      try {
-        setError(false);
-
-        const response = await fetch(DEXSCREENER_SOLANA_TOKEN_URL, {
-          headers: {
-            Accept: 'application/json',
-          },
-          cache: 'no-store',
-        });
-
-        if (!response.ok) {
-          throw new Error(`DEX Screener request failed with status ${response.status}`);
-        }
-
-        const data = (await response.json()) as DexScreenerPair[];
-
-        if (!Array.isArray(data) || data.length === 0) {
-          setPair(null);
-          setError(true);
-          return;
-        }
-
-        const bestPair = data
-          .filter((item) => item.priceUsd)
-          .sort((a, b) => (b.liquidity?.usd || 0) - (a.liquidity?.usd || 0))[0];
-
-        setPair(bestPair || data[0]);
-        setLastUpdated(
-          new Date().toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-          })
-        );
-      } catch (err) {
-        console.error('Unable to load $SHARK token price marquee:', err);
-        setError(true);
-        setPair(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTokenPrice();
-
-    const interval = window.setInterval(() => {
-      fetchTokenPrice();
-    }, 60_000);
-
-    return () => window.clearInterval(interval);
-  }, [hasContractAddress]);
-
-  const price = pair?.priceUsd ? formatCurrency(pair.priceUsd) : 'Coming Soon';
-  const marketCap = pair?.marketCap
-    ? formatCompactCurrency(pair.marketCap)
-    : pair?.fdv
-      ? formatCompactCurrency(pair.fdv)
-      : 'After Launch';
-  const liquidity = pair?.liquidity?.usd ? formatCompactCurrency(pair.liquidity.usd) : 'After DEX';
-  const change = pair?.priceChange?.h24 !== undefined ? formatPercent(pair.priceChange.h24) : 'After Launch';
-
-  const statusText = !hasContractAddress
-    ? 'Waiting for official contract address'
-    : loading
-      ? 'Loading live price'
-      : error
-        ? 'Waiting for pair data'
-        : lastUpdated
-          ? `Updated ${lastUpdated}`
-          : 'Live';
+  const { values, statusText, hasContractAddress } = useSharkDexData();
 
   const getTokenMarqueeDuration = () => {
     if (screenSpeed === 'mobile') return 6;
@@ -559,14 +424,12 @@ function SharkTokenPriceMarquee() {
   };
 
   const marqueeItems = [
-    `$SHARK Live Price: ${price}`,
-    `Market Cap: ${marketCap}`,
-    `Liquidity: ${liquidity}`,
-    `24h Change: ${change}`,
-    `Status: ${statusText}`,
-    'Contract Address: Coming Soon',
-    'Launching on Pump.fun',
-    'DEX market cap and liquidity tracking after migration',
+    `$SHARK Live Price: ${values.price}`,
+    `Market Cap: ${values.marketCap}`,
+    `Liquidity: ${values.liquidity}`,
+    `24h Change: ${values.change24h}`,
+    `24h Volume: ${values.volume24h}`,
+    hasContractAddress ? `Status: ${statusText}` : 'Live market feed ready',
   ];
 
   const repeatedItems = [
@@ -706,10 +569,6 @@ function ProjectVideoSection() {
                     />
                   </div>
                 </div>
-
-                <p className="mt-3 text-xs text-shark-muted text-center">
-                  Make sure the Google Drive video sharing permission is set to “Anyone with the link can view”.
-                </p>
               </div>
             </div>
           </div>

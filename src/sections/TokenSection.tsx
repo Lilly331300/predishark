@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Copy,
   AlertTriangle,
   Coins,
-
   Lock,
   RefreshCw,
   Vote,
@@ -15,40 +14,10 @@ import {
   Radio,
   BarChart3,
   Droplets,
-  Clock3,
   Activity,
   Rocket,
 } from 'lucide-react';
-
-const SHARK_CONTRACT_ADDRESS = '';
-
-const DEXSCREENER_SOLANA_TOKEN_URL = SHARK_CONTRACT_ADDRESS
-  ? `https://api.dexscreener.com/token-pairs/v1/solana/${SHARK_CONTRACT_ADDRESS}`
-  : '';
-
-type DexScreenerPair = {
-  url?: string;
-  dexId?: string;
-  pairAddress?: string;
-  priceUsd?: string | null;
-  marketCap?: number | null;
-  fdv?: number | null;
-  liquidity?: {
-    usd?: number;
-    base?: number;
-    quote?: number;
-  } | null;
-  volume?: {
-    h24?: number;
-    h6?: number;
-    h1?: number;
-  };
-  priceChange?: {
-    h24?: number;
-    h6?: number;
-    h1?: number;
-  } | null;
-};
+import { useSharkDexData, shortenAddress } from '@/hooks/useSharkDexData';
 
 const tokenStats = [
   {
@@ -59,9 +28,9 @@ const tokenStats = [
   },
   {
     icon: Rocket,
-    label: 'Launch',
-    value: 'Pump.fun',
-    detail: 'Public token launch route',
+    label: 'Market Feed',
+    value: 'Live Ready',
+    detail: 'Price updates after launch',
   },
   {
     icon: CircleDollarSign,
@@ -95,161 +64,38 @@ const utilityItems = [
   },
 ];
 
-function formatCurrency(value?: number | string | null) {
-  if (value === null || value === undefined || value === '') return 'Coming Soon';
-
-  const numericValue = typeof value === 'string' ? Number(value) : value;
-
-  if (!Number.isFinite(numericValue)) return 'Coming Soon';
-
-  if (numericValue < 0.01) {
-    return `$${numericValue.toFixed(8)}`;
-  }
-
-  if (numericValue < 1) {
-    return `$${numericValue.toFixed(6)}`;
-  }
-
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 4,
-  }).format(numericValue);
-}
-
-function formatCompactCurrency(value?: number | null) {
-  if (value === null || value === undefined || !Number.isFinite(value)) return 'Coming Soon';
-
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    notation: 'compact',
-    maximumFractionDigits: 2,
-  }).format(value);
-}
-
-function formatPercent(value?: number | null) {
-  if (value === null || value === undefined || !Number.isFinite(value)) return 'Coming Soon';
-
-  const sign = value > 0 ? '+' : '';
-
-  return `${sign}${value.toFixed(2)}%`;
-}
-
-function shortenAddress(address: string) {
-  if (!address) return 'Official CA will appear after launch confirmation';
-  return `${address.slice(0, 6)}...${address.slice(-6)}`;
-}
-
 function LiveTokenPriceCard() {
-  const [pair, setPair] = useState<DexScreenerPair | null>(null);
-  const [loading, setLoading] = useState(Boolean(SHARK_CONTRACT_ADDRESS));
-  const [error, setError] = useState(false);
-  const [lastUpdated, setLastUpdated] = useState('');
-
-  const hasContractAddress = Boolean(SHARK_CONTRACT_ADDRESS);
+  const { values, statusText, hasContractAddress, contractAddress } = useSharkDexData();
 
   const priceCards = useMemo(
     () => [
       {
         icon: CircleDollarSign,
         label: 'Live Price',
-        value: pair?.priceUsd ? formatCurrency(pair.priceUsd) : 'Activates After CA',
+        value: values.price,
         tone: 'green',
       },
       {
         icon: BarChart3,
-        label: 'Market Cap',
-        value: pair?.marketCap
-          ? formatCompactCurrency(pair.marketCap)
-          : pair?.fdv
-            ? formatCompactCurrency(pair.fdv)
-            : 'After Launch',
+        label: 'Market Cap / FDV',
+        value: values.marketCap,
         tone: 'cyan',
       },
       {
         icon: Droplets,
         label: 'Liquidity',
-        value: pair?.liquidity?.usd ? formatCompactCurrency(pair.liquidity.usd) : 'After DEX',
+        value: values.liquidity,
         tone: 'gold',
       },
       {
         icon: Activity,
         label: '24h Change',
-        value: pair?.priceChange?.h24 !== undefined ? formatPercent(pair.priceChange.h24) : 'After Launch',
+        value: values.change24h,
         tone: 'green',
       },
     ],
-    [pair]
+    [values]
   );
-
-  useEffect(() => {
-    if (!hasContractAddress) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchTokenPrice = async () => {
-      try {
-        setError(false);
-
-        const response = await fetch(DEXSCREENER_SOLANA_TOKEN_URL, {
-          headers: {
-            Accept: 'application/json',
-          },
-          cache: 'no-store',
-        });
-
-        if (!response.ok) {
-          throw new Error(`DEX Screener request failed with status ${response.status}`);
-        }
-
-        const data = (await response.json()) as DexScreenerPair[];
-
-        if (!Array.isArray(data) || data.length === 0) {
-          setPair(null);
-          setError(true);
-          return;
-        }
-
-        const bestPair = data
-          .filter((item) => item.priceUsd)
-          .sort((a, b) => (b.liquidity?.usd || 0) - (a.liquidity?.usd || 0))[0];
-
-        setPair(bestPair || data[0]);
-        setLastUpdated(
-          new Date().toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-          })
-        );
-      } catch (err) {
-        console.error('Unable to load $SHARK token price:', err);
-        setError(true);
-        setPair(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTokenPrice();
-
-    const interval = window.setInterval(() => {
-      fetchTokenPrice();
-    }, 60_000);
-
-    return () => window.clearInterval(interval);
-  }, [hasContractAddress]);
-
-  const statusText = !hasContractAddress
-    ? 'Waiting for official CA'
-    : loading
-      ? 'Loading live price'
-      : error
-        ? 'Waiting for pair data'
-        : lastUpdated
-          ? `Updated ${lastUpdated}`
-          : 'Live';
 
   return (
     <div className="relative overflow-hidden rounded-[28px] border border-shark-green/20 bg-white/[0.035] p-4 sm:p-5 lg:p-6">
@@ -268,9 +114,8 @@ function LiveTokenPriceCard() {
             </h3>
 
             <p className="mt-2 text-sm text-shark-muted leading-7 max-w-2xl">
-              $SHARK launches through Pump.fun. Live price tracking will activate when the official
-              contract address is added to the website. Market cap and liquidity can expand after
-              DEX pair data becomes available.
+              The $SHARK market feed is ready for launch. Live price, market cap, liquidity,
+              volume, and 24h movement will appear here once trading data is available.
             </p>
           </div>
 
@@ -289,7 +134,7 @@ function LiveTokenPriceCard() {
           </p>
 
           <p className="mt-2 text-sm font-semibold text-shark-white break-all">
-            {shortenAddress(SHARK_CONTRACT_ADDRESS)}
+            {shortenAddress(contractAddress)}
           </p>
         </div>
 
@@ -326,32 +171,14 @@ function LiveTokenPriceCard() {
           ))}
         </div>
 
-        <div className="mt-5 rounded-2xl border border-shark-cyan/20 bg-shark-cyan/5 p-4 min-w-0">
-          <div className="flex items-start gap-3 min-w-0">
-            <div className="w-10 h-10 rounded-2xl bg-shark-cyan/10 border border-shark-cyan/20 flex items-center justify-center flex-shrink-0">
-              <Clock3 className="w-5 h-5 text-shark-cyan" />
-            </div>
-
-            <div className="min-w-0">
-              <p className="text-sm font-bold text-shark-white">
-                Live Launch Development
-              </p>
-              <p className="mt-1 text-sm text-shark-muted leading-7">
-                After the official $SHARK CA is confirmed, live price tracking can display price,
-                market cap, liquidity, volume, and 24h change from available trading data.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {pair?.url && (
+        {hasContractAddress && values.pairUrl && (
           <a
-            href={pair.url}
+            href={values.pairUrl}
             target="_blank"
             rel="noreferrer"
             className="mt-5 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl glass border border-white/10 text-shark-white font-semibold hover:border-shark-green/30 transition-all"
           >
-            View Pair
+            View Market Pair
             <ArrowRight className="w-4 h-4 text-shark-green" />
           </a>
         )}
@@ -362,6 +189,16 @@ function LiveTokenPriceCard() {
 
 export function TokenSection() {
   const [showNotice, setShowNotice] = useState(false);
+  const { contractAddress } = useSharkDexData();
+
+  const copyContractAddress = async () => {
+    if (!contractAddress) {
+      setShowNotice(true);
+      return;
+    }
+
+    await navigator.clipboard.writeText(contractAddress);
+  };
 
   return (
     <>
@@ -396,8 +233,8 @@ export function TokenSection() {
 
                   <p className="mt-5 text-shark-muted text-base leading-8">
                     PrediShark introduces <span className="text-shark-white font-semibold">$SHARK</span> as
-                    the utility token powering rewards, partner access, buybacks, community activity,
-                    and future platform features. The token launch route is now Pump.fun.
+                    the utility token powering rewards, buybacks, community activity, and future
+                    platform features. The live market feed is prepared for the official launch.
                   </p>
 
                   <div className="mt-6 rounded-3xl border border-white/10 bg-white/[0.035] p-5 min-w-0">
@@ -407,11 +244,11 @@ export function TokenSection() {
 
                     <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-3 min-w-0">
                       <div className="flex-1 min-w-0 text-sm text-shark-white bg-shark-black/50 border border-white/10 rounded-2xl px-4 py-3 break-all">
-                        {SHARK_CONTRACT_ADDRESS || 'Official CA will be added after launch confirmation'}
+                        {contractAddress || 'Official CA will be shown here'}
                       </div>
 
                       <button
-                        onClick={() => setShowNotice(true)}
+                        onClick={copyContractAddress}
                         className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-gradient-to-r from-shark-green to-shark-cyan text-shark-black font-bold whitespace-nowrap hover:opacity-90 transition-opacity"
                       >
                         <Copy className="w-4 h-4" />
@@ -526,7 +363,7 @@ export function TokenSection() {
                     Official Contract Address
                   </h3>
                   <p className="text-sm text-shark-muted">
-                    Use only the official PrediShark.ai launch information.
+                    The official CA will be available at launch.
                   </p>
                 </div>
               </div>
@@ -534,8 +371,8 @@ export function TokenSection() {
               <div className="space-y-4 text-sm text-shark-muted leading-7">
                 <p className="text-shark-white font-medium">Launch update</p>
                 <p>
-                  $SHARK is launching through Pump.fun. The official contract address will be shown
-                  on PrediShark.ai and official social channels when confirmed.
+                  The official $SHARK contract address will appear here once it is live. Please use
+                  only the CA shown on PrediShark.ai and official PrediShark channels.
                 </p>
                 <p>
                   Always verify before interacting with any token or contract. Avoid fake addresses,
