@@ -80,6 +80,9 @@ export function useSharkDexData() {
   useEffect(() => {
     if (!hasContractAddress) {
       setLoading(false);
+      setError(false);
+      setPair(null);
+      setLastUpdated('');
       return;
     }
 

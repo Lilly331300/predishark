@@ -115,8 +115,8 @@ function LiveTokenPriceCard() {
             </h3>
 
             <p className="mt-2 text-sm text-shark-muted leading-7 max-w-2xl">
-              Live market data for $SHARK, including price, market cap, liquidity, volume, and
-              24h movement.
+              Live market data for $SHARK, including price, market cap, liquidity, volume, and 24h
+              movement.
             </p>
           </div>
 
