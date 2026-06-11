@@ -16,6 +16,7 @@ import {
   Droplets,
   Activity,
   Rocket,
+  CheckCircle2,
 } from 'lucide-react';
 import { useSharkDexData, shortenAddress } from '@/hooks/useSharkDexData';
 
@@ -29,8 +30,8 @@ const tokenStats = [
   {
     icon: Rocket,
     label: 'Market Feed',
-    value: 'Live Ready',
-    detail: 'Price updates after launch',
+    value: 'Live',
+    detail: 'DEX market data enabled',
   },
   {
     icon: CircleDollarSign,
@@ -114,8 +115,8 @@ function LiveTokenPriceCard() {
             </h3>
 
             <p className="mt-2 text-sm text-shark-muted leading-7 max-w-2xl">
-              The $SHARK market feed is ready for launch. Live price, market cap, liquidity,
-              volume, and 24h movement will appear here once trading data is available.
+              Live market data for $SHARK, including price, market cap, liquidity, volume, and
+              24h movement.
             </p>
           </div>
 
@@ -189,6 +190,7 @@ function LiveTokenPriceCard() {
 
 export function TokenSection() {
   const [showNotice, setShowNotice] = useState(false);
+  const [copied, setCopied] = useState(false);
   const { contractAddress } = useSharkDexData();
 
   const copyContractAddress = async () => {
@@ -198,6 +200,11 @@ export function TokenSection() {
     }
 
     await navigator.clipboard.writeText(contractAddress);
+    setCopied(true);
+
+    window.setTimeout(() => {
+      setCopied(false);
+    }, 1800);
   };
 
   return (
@@ -234,7 +241,7 @@ export function TokenSection() {
                   <p className="mt-5 text-shark-muted text-base leading-8">
                     PrediShark introduces <span className="text-shark-white font-semibold">$SHARK</span> as
                     the utility token powering rewards, buybacks, community activity, and future
-                    platform features. The live market feed is prepared for the official launch.
+                    platform features.
                   </p>
 
                   <div className="mt-6 rounded-3xl border border-white/10 bg-white/[0.035] p-5 min-w-0">
@@ -244,15 +251,15 @@ export function TokenSection() {
 
                     <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-3 min-w-0">
                       <div className="flex-1 min-w-0 text-sm text-shark-white bg-shark-black/50 border border-white/10 rounded-2xl px-4 py-3 break-all">
-                        {contractAddress || 'Official CA will be shown here'}
+                        {contractAddress}
                       </div>
 
                       <button
                         onClick={copyContractAddress}
                         className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-gradient-to-r from-shark-green to-shark-cyan text-shark-black font-bold whitespace-nowrap hover:opacity-90 transition-opacity"
                       >
-                        <Copy className="w-4 h-4" />
-                        Copy
+                        {copied ? <CheckCircle2 className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                        {copied ? 'Copied' : 'Copy'}
                       </button>
                     </div>
                   </div>
@@ -363,17 +370,12 @@ export function TokenSection() {
                     Official Contract Address
                   </h3>
                   <p className="text-sm text-shark-muted">
-                    The official CA will be available at launch.
+                    Please use only the official $SHARK CA shown on PrediShark.ai.
                   </p>
                 </div>
               </div>
 
               <div className="space-y-4 text-sm text-shark-muted leading-7">
-                <p className="text-shark-white font-medium">Launch update</p>
-                <p>
-                  The official $SHARK contract address will appear here once it is live. Please use
-                  only the CA shown on PrediShark.ai and official PrediShark channels.
-                </p>
                 <p>
                   Always verify before interacting with any token or contract. Avoid fake addresses,
                   fake airdrops, and unofficial links.
