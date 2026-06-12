@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Copy, AlertTriangle, Send } from 'lucide-react';
+import { SHARK_CONTRACT_ADDRESS } from '@/config/sharkToken';
 
 const WHITEPAPER_FILE = '/assets/docs/PrediShark_whitepaper.pdf';
 const TELEGRAM_LINK = 'https://t.me/predishark';
@@ -9,29 +10,108 @@ const X_LINK = 'https://x.com/predishark';
 const navLinks = [
   { label: 'HOME', href: '#home', type: 'scroll' },
   { label: 'PREDICTIONS', href: 'predictions', type: 'reveal' },
+  { label: 'REAL-TIME STATS', href: 'real-time-statistics', type: 'prediction-stats' },
   { label: 'WHITEPAPER', href: WHITEPAPER_FILE, type: 'external' },
   { label: 'TOKEN', href: '#token', type: 'scroll' },
   { label: 'PARTNERS', href: 'partners', type: 'reveal' },
   { label: 'ROADMAP', href: 'roadmap', type: 'reveal' },
 ];
 
+function findRealTimeStatisticsElement() {
+  const directTarget = document.querySelector(
+    '#real-time-statistics, #real-time-stats, #realtime-statistics, [data-section="real-time-statistics"], [data-anchor="real-time-statistics"]'
+  );
+
+  if (directTarget instanceof HTMLElement) {
+    return directTarget;
+  }
+
+  const possibleTextElements = Array.from(
+    document.querySelectorAll('section, article, div, h1, h2, h3, h4, h5, p, span')
+  );
+
+  const headingMatch = possibleTextElements.find((element) => {
+    const text = element.textContent?.replace(/\s+/g, ' ').trim().toLowerCase() || '';
+    return text === 'real-time statistics' || text.includes('real-time statistics');
+  });
+
+  if (headingMatch instanceof HTMLElement) {
+    const nearestSection = headingMatch.closest('section');
+    if (nearestSection instanceof HTMLElement) return nearestSection;
+
+    const nearestCard = headingMatch.closest('.glass-strong, .glass, [class*="rounded"]');
+    if (nearestCard instanceof HTMLElement) return nearestCard;
+
+    return headingMatch;
+  }
+
+  return null;
+}
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showNotice, setShowNotice] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
 
     window.addEventListener('scroll', handleScroll);
+    handleScroll();
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const scrollToRealTimeStatistics = () => {
+    let attempts = 0;
+
+    const tryScroll = () => {
+      const statsElement = findRealTimeStatisticsElement();
+
+      if (statsElement) {
+        statsElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+        return;
+      }
+
+      attempts += 1;
+
+      if (attempts < 18) {
+        window.setTimeout(tryScroll, 180);
+        return;
+      }
+
+      const predictionSection = document.querySelector('#predictions');
+      if (predictionSection) {
+        predictionSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }
+    };
+
+    window.setTimeout(tryScroll, 260);
+  };
 
   const handleNavClick = (href: string, type: string) => {
     setMobileOpen(false);
 
     if (type === 'external') {
       window.open(href, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    if (type === 'prediction-stats') {
+      window.dispatchEvent(
+        new CustomEvent('predishark:reveal-section', {
+          detail: 'predictions',
+        })
+      );
+
+      scrollToRealTimeStatistics();
       return;
     }
 
@@ -51,6 +131,20 @@ export function Navbar() {
     );
   };
 
+  const copyContractAddress = async () => {
+    if (!SHARK_CONTRACT_ADDRESS) {
+      setShowNotice(true);
+      return;
+    }
+
+    await navigator.clipboard.writeText(SHARK_CONTRACT_ADDRESS);
+    setCopied(true);
+
+    window.setTimeout(() => {
+      setCopied(false);
+    }, 1800);
+  };
+
   return (
     <>
       <motion.nav
@@ -61,11 +155,11 @@ export function Navbar() {
           scrolled ? 'glass-strong shadow-lg' : 'bg-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20 lg:h-24">
+        <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
+          <div className="flex items-center justify-between h-20 lg:h-24 gap-4">
             <button
               onClick={() => handleNavClick('#home', 'scroll')}
-              className="flex items-center gap-3 group"
+              className="flex items-center gap-3 group shrink-0"
             >
               <div className="relative">
                 <div className="absolute inset-0 rounded-2xl bg-shark-green/20 blur-xl opacity-70 group-hover:opacity-100 transition-opacity" />
@@ -73,30 +167,30 @@ export function Navbar() {
                 <img
                   src="/assets/branding/predishark-fish-logo.png"
                   alt="PrediShark.ai logo"
-                  className="relative z-10 w-14 h-14 sm:w-16 sm:h-16 lg:w-[72px] lg:h-[72px] object-contain rounded-2xl"
+                  className="relative z-10 w-14 h-14 sm:w-16 sm:h-16 lg:w-[68px] lg:h-[68px] xl:w-[72px] xl:h-[72px] object-contain rounded-2xl"
                 />
               </div>
 
-              <span className="text-xl sm:text-2xl lg:text-[28px] font-black tracking-[0.04em] uppercase leading-none">
+              <span className="text-xl sm:text-2xl lg:text-[24px] xl:text-[28px] font-black tracking-[0.04em] uppercase leading-none">
                 <span className="text-shark-white">Predi</span>
                 <span className="text-shark-green">Shark</span>
                 <span className="text-shark-cyan">.ai</span>
               </span>
             </button>
 
-            <div className="hidden lg:flex items-center gap-1">
+            <div className="hidden lg:flex flex-1 items-center justify-center gap-0.5 xl:gap-1 min-w-0">
               {navLinks.map((link) => (
                 <button
                   key={link.label}
                   onClick={() => handleNavClick(link.href, link.type)}
-                  className="px-3 py-2 text-xs font-semibold tracking-[0.18em] uppercase text-shark-muted hover:text-shark-white transition-colors rounded-lg hover:bg-white/5"
+                  className="px-2.5 xl:px-3 py-2 text-[10px] xl:text-xs font-semibold tracking-[0.12em] xl:tracking-[0.16em] uppercase text-shark-muted hover:text-shark-white transition-colors rounded-lg hover:bg-white/5 whitespace-nowrap"
                 >
                   {link.label}
                 </button>
               ))}
             </div>
 
-            <div className="hidden lg:flex items-center gap-3">
+            <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
               <a
                 href={X_LINK}
                 target="_blank"
@@ -118,11 +212,11 @@ export function Navbar() {
               </a>
 
               <button
-                onClick={() => setShowNotice(true)}
-                className="flex items-center gap-2 px-4 py-2.5 text-xs font-semibold tracking-[0.18em] uppercase glass rounded-xl hover:border-shark-green/30 transition-all"
+                onClick={copyContractAddress}
+                className="flex items-center gap-2 px-3 xl:px-4 py-2.5 text-[10px] xl:text-xs font-semibold tracking-[0.14em] uppercase glass rounded-xl hover:border-shark-green/30 transition-all whitespace-nowrap"
               >
                 <Copy className="w-4 h-4 text-shark-green" />
-                <span className="text-shark-white">Copy CA</span>
+                <span className="text-shark-white">{copied ? 'Copied' : 'Copy CA'}</span>
               </button>
             </div>
 
@@ -185,10 +279,14 @@ export function Navbar() {
                   </a>
 
                   <button
-                    onClick={() => setShowNotice(true)}
+                    onClick={copyContractAddress}
                     className="flex items-center justify-center h-12 rounded-2xl glass text-shark-muted hover:text-shark-green transition-all"
                   >
-                    <Copy className="w-4 h-4" />
+                    {copied ? (
+                      <span className="text-xs font-black text-shark-green">OK</span>
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -223,20 +321,15 @@ export function Navbar() {
 
                 <div>
                   <h3 className="text-xl font-bold text-shark-white">
-                    Contract Address Coming Soon
+                    Official Contract Address
                   </h3>
                   <p className="text-sm text-shark-muted">
-                    Please wait for the official launch notice.
+                    Please use only the official $SHARK CA shown on PrediShark.ai.
                   </p>
                 </div>
               </div>
 
               <div className="space-y-4 text-sm text-shark-muted leading-7">
-                <p className="text-shark-white font-medium">Coming soon!</p>
-                <p>
-                  The official PrediShark.ai contract address is not live yet. Please only use the
-                  address announced through official PrediShark.ai channels.
-                </p>
                 <p>
                   Always verify before interacting with any token or contract. Avoid fake addresses,
                   fake airdrops, and unofficial links.

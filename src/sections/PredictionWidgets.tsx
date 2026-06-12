@@ -142,14 +142,16 @@ export function PredictionWidgets() {
           {liveModules.map((module, index) => {
             const colors = accentMap[module.accent];
             const Icon = module.icon;
+            const isRealTimeStatistics = module.title === 'Real-Time Statistics';
 
             return (
               <motion.div
+                id={isRealTimeStatistics ? 'real-time-statistics' : undefined}
                 key={module.title}
                 initial={{ opacity: 0, y: 34 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, delay: index * 0.08 }}
-                className={`relative overflow-hidden rounded-[28px] border ${colors.border} glass-strong ${colors.glow}`}
+                className={`scroll-mt-32 relative overflow-hidden rounded-[28px] border ${colors.border} glass-strong ${colors.glow}`}
               >
                 <div
                   className="absolute inset-0 bg-cover bg-center opacity-20"
