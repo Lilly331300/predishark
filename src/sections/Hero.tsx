@@ -205,7 +205,7 @@ export function Hero() {
                   </div>
 
                   <div>
-                    <p className="text-lg font-black text-shark-green">56–62%</p>
+                    <p className="text-lg font-black text-shark-green">62%+</p>
                     <p className="text-xs uppercase tracking-[0.16em] text-shark-muted">
                       Average Success Rate
                     </p>
